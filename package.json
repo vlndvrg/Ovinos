@@ -1,0 +1,20 @@
+{
+  "name": "eba-bienestar-animal",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sistema de Evaluación de Bienestar Animal (EBA) en ovinos y caprinos - ICA",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently -n API,WEB -c green,cyan \"npm run dev -w backend\" \"npm run dev -w frontend\"",
+    "build": "npm run build -w backend && npm run build -w frontend",
+    "test": "npm run test -w backend",
+    "db:setup": "npm run db:setup -w backend",
+    "db:seed:demo": "npm run db:seed:demo -w backend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
