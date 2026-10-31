@@ -1,4 +1,5 @@
 import {
+  BarChart3,
   BookOpen,
   ClipboardCheck,
   History,
@@ -25,6 +26,7 @@ const ETIQUETA_ROL: Record<string, string> = {
 interface ItemNav {
   to: string;
   label: string;
+  shortLabel?: string;
   icon: typeof LayoutDashboard;
   roles: string[];
   end?: boolean;
@@ -39,7 +41,21 @@ const NAVEGACION: ItemNav[] = [
     icon: ClipboardCheck,
     roles: ['ADMIN', 'EVALUADOR', 'RESPONSABLE'],
   },
-  { to: '/historial', label: 'Historial', icon: History, roles: ['ADMIN', 'EVALUADOR', 'RESPONSABLE'] },
+  {
+    to: '/historial',
+    label: 'Historial',
+    icon: History,
+    roles: ['ADMIN', 'EVALUADOR', 'RESPONSABLE'],
+    end: true,
+  },
+  {
+    to: '/historial-global',
+    label: 'Historial global',
+    shortLabel: 'Global',
+    icon: BarChart3,
+    roles: ['ADMIN'],
+    end: true,
+  },
   { to: '/usuarios', label: 'Usuarios', icon: Users, roles: ['ADMIN'] },
   { to: '/indicadores', label: 'Catálogo', icon: BookOpen, roles: ['ADMIN'] },
 ];
@@ -237,7 +253,7 @@ export function Layout() {
               }
             >
               <item.icon className="h-5 w-5" />
-              {item.to === '/evaluaciones' ? 'Resultados' : item.label}
+              {item.to === '/evaluaciones' ? 'Resultados' : (item.shortLabel ?? item.label)}
             </NavLink>
           ))}
         </div>

@@ -171,6 +171,21 @@ export interface HistorialResponse {
   evaluaciones: HistorialEvaluacion[];
 }
 
+export interface HistorialGlobalEvaluacion extends HistorialEvaluacion {
+  predio_id: number;
+  predio_nombre: string;
+  predio_municipio: string;
+  predio_especie: Especie;
+  predio_sistema_productivo: SistemaProductivo;
+  evaluador_id: number;
+  evaluador_nombre: string;
+  cerrada_en: string | null;
+}
+
+export interface HistorialGlobalResponse {
+  evaluaciones: HistorialGlobalEvaluacion[];
+}
+
 export interface ResponsableOption {
   id: number;
   nombre: string;

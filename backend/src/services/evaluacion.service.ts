@@ -24,6 +24,7 @@ import {
   evaluacionCreateSchema,
   evaluacionUpdateSchema,
   evaluacionesQuerySchema,
+  historialGlobalQuerySchema,
   puntajeSchema,
 } from '../validation/schemas';
 
@@ -31,6 +32,7 @@ type CrearEvaluacionInput = z.infer<typeof evaluacionCreateSchema>;
 type ActualizarEvaluacionInput = z.infer<typeof evaluacionUpdateSchema>;
 type CalificarInput = z.infer<typeof puntajeSchema>;
 type EvaluacionesQuery = z.infer<typeof evaluacionesQuerySchema>;
+type HistorialGlobalQuery = z.infer<typeof historialGlobalQuerySchema>;
 
 function fechaHoy(): string {
   const ahora = new Date();
@@ -102,6 +104,14 @@ async function construirDetalle(
 
 export async function listar(user: AuthUser, filtros: EvaluacionesQuery) {
   return evaluacionRepository.findAll(filtros, { rol: user.rol, userId: user.id });
+}
+
+export async function historialGlobal(user: AuthUser, filtros: HistorialGlobalQuery) {
+  if (user.rol !== 'ADMIN') {
+    throw forbidden('Solo el administrador puede consultar el historial global.');
+  }
+
+  return { evaluaciones: await evaluacionRepository.findHistorialGlobal(filtros) };
 }
 
 export async function detalle(user: AuthUser, id: number): Promise<EvaluacionDetalle> {

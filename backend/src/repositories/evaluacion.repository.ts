@@ -294,6 +294,119 @@ export interface HistorialEvaluacion {
   libertades: HistorialLibertad[];
 }
 
+export interface FiltrosHistorialGlobal {
+  predioId?: number;
+  fechaDesde?: string;
+  fechaHasta?: string;
+  clasificacion?: Clasificacion;
+}
+
+interface HistorialGlobalRow extends RowDataPacket {
+  id: number;
+  fecha: string;
+  puntaje_total: number | null;
+  clasificacion: Clasificacion | null;
+  cerrada_en: string | null;
+  predio_id: number;
+  predio_nombre: string;
+  predio_municipio: string;
+  predio_especie: Especie;
+  predio_sistema_productivo: SistemaProductivo;
+  evaluador_id: number;
+  evaluador_nombre: string;
+  libertad_id: number;
+  libertad_nombre: string;
+  libertad_peso: number;
+  promedio: number;
+}
+
+export interface HistorialGlobalEvaluacion extends HistorialEvaluacion {
+  predio_id: number;
+  predio_nombre: string;
+  predio_municipio: string;
+  predio_especie: Especie;
+  predio_sistema_productivo: SistemaProductivo;
+  evaluador_id: number;
+  evaluador_nombre: string;
+  cerrada_en: string | null;
+}
+
+export async function findHistorialGlobal(
+  filtros: FiltrosHistorialGlobal,
+): Promise<HistorialGlobalEvaluacion[]> {
+  const condiciones = ["e.estado = 'CERRADA'"];
+  const parametros: Array<string | number | boolean | null> = [];
+
+  if (filtros.predioId !== undefined) {
+    condiciones.push('e.predio_id = ?');
+    parametros.push(filtros.predioId);
+  }
+  if (filtros.fechaDesde) {
+    condiciones.push('e.fecha >= ?');
+    parametros.push(filtros.fechaDesde);
+  }
+  if (filtros.fechaHasta) {
+    condiciones.push('e.fecha <= ?');
+    parametros.push(filtros.fechaHasta);
+  }
+  if (filtros.clasificacion) {
+    condiciones.push('e.clasificacion = ?');
+    parametros.push(filtros.clasificacion);
+  }
+
+  const [rows] = await pool.execute<HistorialGlobalRow[]>(
+    `SELECT e.id, e.fecha, e.puntaje_total, e.clasificacion, e.cerrada_en,
+            p.id AS predio_id, p.nombre AS predio_nombre, p.municipio AS predio_municipio,
+            p.especie AS predio_especie, p.sistema_productivo AS predio_sistema_productivo,
+            u.id AS evaluador_id, u.nombre AS evaluador_nombre,
+            l.id AS libertad_id, l.nombre AS libertad_nombre, l.peso AS libertad_peso,
+            AVG(ei.puntaje) AS promedio
+     FROM evaluaciones e
+     JOIN predios p ON p.id = e.predio_id
+     JOIN usuarios u ON u.id = e.evaluador_id
+     JOIN evaluacion_indicadores ei ON ei.evaluacion_id = e.id AND ei.puntaje IS NOT NULL
+     JOIN indicadores i ON i.id = ei.indicador_id
+     JOIN libertades l ON l.id = i.libertad_id
+     WHERE ${condiciones.join(' AND ')}
+     GROUP BY e.id, e.fecha, e.puntaje_total, e.clasificacion, e.cerrada_en,
+              p.id, p.nombre, p.municipio, p.especie, p.sistema_productivo,
+              u.id, u.nombre, l.id, l.nombre, l.peso
+     ORDER BY e.fecha ASC, e.id ASC`,
+    parametros,
+  );
+
+  const porEvaluacion = new Map<number, HistorialGlobalEvaluacion>();
+  for (const row of rows) {
+    let evaluacion = porEvaluacion.get(row.id);
+    if (!evaluacion) {
+      evaluacion = {
+        id: row.id,
+        fecha: row.fecha,
+        puntaje_total: row.puntaje_total === null ? null : Number(row.puntaje_total),
+        clasificacion: row.clasificacion,
+        libertades: [],
+        predio_id: row.predio_id,
+        predio_nombre: row.predio_nombre,
+        predio_municipio: row.predio_municipio,
+        predio_especie: row.predio_especie,
+        predio_sistema_productivo: row.predio_sistema_productivo,
+        evaluador_id: row.evaluador_id,
+        evaluador_nombre: row.evaluador_nombre,
+        cerrada_en: row.cerrada_en,
+      };
+      porEvaluacion.set(row.id, evaluacion);
+    }
+    evaluacion.libertades.push({
+      libertad_id: row.libertad_id,
+      libertad_nombre: row.libertad_nombre,
+      peso: Number(row.libertad_peso),
+      puntaje: Math.round(Number(row.promedio) * 100) / 100,
+    });
+  }
+
+  return Array.from(porEvaluacion.values());
+}
+
 export async function findHistorial(predioId: number): Promise<HistorialEvaluacion[]> {
   const [rows] = await pool.execute<HistorialRow[]>(
     `SELECT e.id, e.fecha, e.puntaje_total, e.clasificacion,

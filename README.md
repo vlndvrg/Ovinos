@@ -236,6 +236,7 @@ npm run test -w backend
 
 - Gestiona usuarios: crear, editar, activar/desactivar y asignar predios a responsables.
 - Consulta todos los predios, evaluaciones e historial global.
+- En **Historial global** filtra las evaluaciones cerradas por predio, rango de fechas y clasificación, y consulta una gráfica de evolución.
 - Puede crear y editar predios y evaluaciones.
 - Administra el catálogo de indicadores: descripción y criterios de puntuación.
 - No puede desactivar ni quitar el rol al último administrador activo.
@@ -245,6 +246,7 @@ npm run test -w backend
 ### Evaluador
 
 - Registra y edita predios.
+- Al registrar o editar un predio puede seleccionar o cambiar el responsable entre los usuarios activos con rol `RESPONSABLE`. Esta asignación no está restringida al administrador.
 - Crea evaluaciones para predios.
 - Califica indicadores, guarda borradores y cierra evaluaciones.
 - Solo puede editar/cerrar las evaluaciones que él mismo creó.
@@ -335,6 +337,7 @@ Al crear una evaluación, el backend calcula los indicadores aplicables y guarda
 - Resultados con gráfica por libertad, total, clasificación, mejores/peores indicadores y acceso al reporte.
 - Reporte imprimible y descarga de PDF generado en el servidor.
 - Historial por predio con gráfica de evolución.
+- Historial global para el administrador con filtros por predio, rango de fechas y clasificación, tabla de resultados y gráfica de evolución.
 - Administración de usuarios, activación/desactivación y asignación de predios.
 - Catálogo de indicadores editable por el administrador (descripción y criterios).
 - Estados de carga, mensajes de error y confirmaciones.
@@ -378,6 +381,7 @@ Prefijo: `/api`
 | Método | Ruta | Descripción |
 | --- | --- | --- |
 | `GET` | `/evaluaciones` | Lista evaluaciones según el rol |
+| `GET` | `/evaluaciones/historial-global` | Historial de evaluaciones cerradas con filtros `predioId`, `fechaDesde`, `fechaHasta` y `clasificacion` (solo ADMIN) |
 | `GET` | `/evaluaciones/:id` | Detalle, indicadores y resumen |
 | `POST` | `/evaluaciones` | Crea una evaluación (ADMIN/EVALUADOR) |
 | `PATCH` | `/evaluaciones/:id` | Actualiza fecha/observaciones |
@@ -418,6 +422,7 @@ Las pruebas unitarias cubren:
 - Cierre de evaluaciones: bloqueo por indicadores faltantes, congelamiento de resultados y control de acceso por rol.
 - Calificación por indicador y conservación de observaciones.
 - Creación de evaluaciones y validación de indicadores aplicables.
+- Historial global: control de acceso exclusivo para administrador y paso de filtros al repositorio.
 
 También se verificó manualmente el flujo completo contra una instancia temporal de MariaDB: login de los tres roles, creación de predio y evaluación, calificación, bloqueo de cierre incompleto, cierre, resultados, PDF, historial y restricciones del responsable.
 
@@ -464,6 +469,7 @@ El frontend compilado puede servirse con cualquier servidor estático. Si se pub
 - Los textos de criterios `100`, `55`, `20` y `0` se cargan vacíos en el seed porque la metodología no los trae completos. El administrador puede editarlos desde **Catálogo**.
 - El total de un borrador es una proyección para orientar al evaluador; el total oficial solo se congela al cerrar.
 - El seed de demostración ajusta sus calificaciones para producir `92.13` y la clasificación `EXCELENTE BIENESTAR`.
+- El evaluador puede asignar responsable al crear o editar un predio; la asignación masiva de predios a responsables sigue siendo exclusiva del administrador.
 - La base de datos no se incluye en el repositorio. Debe existir un servidor MySQL/MariaDB accesible.
 - El proyecto no incluye un servidor de correo ni recuperación de contraseña; la gestión de claves la realiza el administrador.
 - El frontend usa Recharts para las gráficas y `pdfkit` en el backend para el PDF.

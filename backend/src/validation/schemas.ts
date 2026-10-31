@@ -106,6 +106,24 @@ export const evaluacionesQuerySchema = z.object({
   limit: z.coerce.number().int().positive().max(200).optional(),
 });
 
+export const historialGlobalQuerySchema = z
+  .object({
+    predioId: z.coerce.number().int().positive().optional(),
+    fechaDesde: fechaISO.optional(),
+    fechaHasta: fechaISO.optional(),
+    clasificacion: z
+      .enum(['EXCELENTE BIENESTAR', 'ALTO', 'MEDIO', 'BAJO'])
+      .optional(),
+  })
+  .refine(
+    (filtros) =>
+      !filtros.fechaDesde || !filtros.fechaHasta || filtros.fechaDesde <= filtros.fechaHasta,
+    {
+      message: 'La fecha desde no puede ser posterior a la fecha hasta.',
+      path: ['fechaHasta'],
+    },
+  );
+
 export const usuariosQuerySchema = z.object({
   rol: z.enum(['ADMIN', 'EVALUADOR', 'RESPONSABLE']).optional(),
   search: z.string().trim().max(120).optional(),

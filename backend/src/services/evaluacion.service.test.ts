@@ -8,6 +8,7 @@ import type {
   Puntaje,
 } from '../types/domain';
 import * as evaluacionRepository from '../repositories/evaluacion.repository';
+import type { HistorialGlobalEvaluacion } from '../repositories/evaluacion.repository';
 import * as indicadorRepository from '../repositories/indicador.repository';
 import * as libertadRepository from '../repositories/libertad.repository';
 import * as predioRepository from '../repositories/predio.repository';
@@ -25,6 +26,7 @@ vi.mock('../repositories/evaluacion.repository', () => ({
   cerrar: vi.fn(),
   remove: vi.fn(),
   findHistorial: vi.fn(),
+  findHistorialGlobal: vi.fn(),
 }));
 
 vi.mock('../repositories/predio.repository', () => ({
@@ -58,6 +60,13 @@ vi.mock('../repositories/usuario.repository', () => ({
   setActivo: vi.fn(),
   countAdminsActivos: vi.fn(),
 }));
+
+const administrador: AuthUser = {
+  id: 1,
+  nombre: 'Administrador de prueba',
+  correo: 'admin@test.co',
+  rol: 'ADMIN',
+};
 
 const evaluador: AuthUser = {
   id: 2,
@@ -325,5 +334,57 @@ describe('EvaluacionService - creación', () => {
     await expect(
       evaluacionService.crear(evaluador, { predio_id: 10 }),
     ).rejects.toMatchObject({ status: 409 });
+  });
+});
+
+describe('EvaluacionService - historial global', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('devuelve las evaluaciones cerradas filtradas al administrador', async () => {
+    const historial: HistorialGlobalEvaluacion[] = [
+      {
+        id: 1,
+        fecha: '2026-01-15',
+        puntaje_total: 82.5,
+        clasificacion: 'ALTO',
+        libertades: [
+          {
+            libertad_id: 1,
+            libertad_nombre: 'L1',
+            peso: 0.2,
+            puntaje: 80,
+          },
+        ],
+        predio_id: 10,
+        predio_nombre: 'Predio de prueba',
+        predio_municipio: 'Municipio',
+        predio_especie: 'OVINO',
+        predio_sistema_productivo: 'SEMI_INTENSIVO',
+        evaluador_id: 2,
+        evaluador_nombre: 'Evaluador de prueba',
+        cerrada_en: '2026-01-16 10:00:00',
+      },
+    ];
+    const filtros = {
+      predioId: 10,
+      fechaDesde: '2026-01-01',
+      fechaHasta: '2026-12-31',
+      clasificacion: 'ALTO' as const,
+    };
+    vi.mocked(evaluacionRepository.findHistorialGlobal).mockResolvedValue(historial);
+
+    await expect(evaluacionService.historialGlobal(administrador, filtros)).resolves.toEqual({
+      evaluaciones: historial,
+    });
+    expect(evaluacionRepository.findHistorialGlobal).toHaveBeenCalledWith(filtros);
+  });
+
+  it('rechaza el historial global para roles distintos de administrador', async () => {
+    await expect(evaluacionService.historialGlobal(evaluador, {})).rejects.toMatchObject({
+      status: 403,
+    });
+    expect(evaluacionRepository.findHistorialGlobal).not.toHaveBeenCalled();
   });
 });

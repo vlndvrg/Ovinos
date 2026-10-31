@@ -7,6 +7,11 @@ export const evaluacionesRouter = Router();
 evaluacionesRouter.use(authenticate);
 
 evaluacionesRouter.get('/', evaluacionController.listar);
+evaluacionesRouter.get(
+  '/historial-global',
+  requireRole('ADMIN'),
+  evaluacionController.historialGlobal,
+);
 evaluacionesRouter.get('/:id', evaluacionController.detalle);
 evaluacionesRouter.get('/:id/reporte.pdf', evaluacionController.reporte);
 

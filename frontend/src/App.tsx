@@ -4,6 +4,7 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import { DashboardPage } from './pages/DashboardPage';
 import { EvaluacionPage } from './pages/EvaluacionPage';
 import { EvaluacionesPage } from './pages/EvaluacionesPage';
+import { HistorialGlobalPage } from './pages/HistorialGlobalPage';
 import { HistorialPage } from './pages/HistorialPage';
 import { IndicadoresPage } from './pages/IndicadoresPage';
 import { LoginPage } from './pages/LoginPage';
@@ -40,6 +41,7 @@ export default function App() {
           </Route>
 
           <Route element={<ProtectedRoute roles={['ADMIN']} />}>
+            <Route path="/historial-global" element={<HistorialGlobalPage />} />
             <Route path="/usuarios" element={<UsuariosPage />} />
             <Route path="/indicadores" element={<IndicadoresPage />} />
           </Route>

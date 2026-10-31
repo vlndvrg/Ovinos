@@ -6,6 +6,7 @@ import {
   evaluacionCreateSchema,
   evaluacionUpdateSchema,
   evaluacionesQuerySchema,
+  historialGlobalQuerySchema,
   idIndicadorParamSchema,
   idParamSchema,
   puntajeSchema,
@@ -14,6 +15,11 @@ import {
 export const listar = asyncHandler(async (req: Request, res: Response) => {
   const filtros = evaluacionesQuerySchema.parse(req.query);
   res.json(await evaluacionService.listar(req.user!, filtros));
+});
+
+export const historialGlobal = asyncHandler(async (req: Request, res: Response) => {
+  const filtros = historialGlobalQuerySchema.parse(req.query);
+  res.json(await evaluacionService.historialGlobal(req.user!, filtros));
 });
 
 export const detalle = asyncHandler(async (req: Request, res: Response) => {

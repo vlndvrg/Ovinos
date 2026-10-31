@@ -82,7 +82,7 @@ function PuntajeCircular({ puntaje, color }: { puntaje: number; color: string })
   );
 }
 
-function IndicadorMejora({ item }: { item: ItemEvaluacion }) {
+function IndicadorResultado({ item }: { item: ItemEvaluacion }) {
   return (
     <div className="rounded-2xl border border-brand-900/[0.08] bg-white p-3.5">
       <div className="flex items-start justify-between gap-3">
@@ -144,7 +144,15 @@ export function ResultadosPage() {
     if (!data) return [];
     return data.items
       .filter((item) => item.puntaje !== null && item.puntaje < 100)
-      .sort((a, b) => (a.puntaje ?? 0) - (b.puntaje ?? 0))
+      .sort((a, b) => (a.puntaje ?? 0) - (b.puntaje ?? 0) || a.numero - b.numero)
+      .slice(0, 6);
+  }, [data]);
+
+  const mejoresIndicadores = useMemo(() => {
+    if (!data) return [];
+    return data.items
+      .filter((item) => item.puntaje !== null)
+      .sort((a, b) => (b.puntaje ?? 0) - (a.puntaje ?? 0) || a.numero - b.numero)
       .slice(0, 6);
   }, [data]);
 
@@ -376,7 +384,31 @@ export function ResultadosPage() {
         </Card>
       </div>
 
-      <div className="mt-5 grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
+      <div className="mt-5 grid gap-5 lg:grid-cols-2">
+        <Card className="p-5">
+          <SectionTitle
+            title="Mejores indicadores"
+            description="Indicadores con mayor puntaje en esta evaluación."
+          />
+          {mejoresIndicadores.length === 0 ? (
+            <div className="flex items-start gap-3 rounded-2xl bg-brand-50 p-4 text-sm text-brand-900/60">
+              <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-brand-600" />
+              <p className="font-semibold">No hay indicadores calificados en esta evaluación.</p>
+            </div>
+          ) : (
+            <div className="grid gap-2.5 sm:grid-cols-2">
+              {mejoresIndicadores.map((item) => (
+                <IndicadorResultado key={item.indicador_id} item={item} />
+              ))}
+            </div>
+          )}
+          <div className="mt-4 flex items-start gap-2.5 rounded-2xl bg-emerald-50 p-3 text-[11px] leading-relaxed text-emerald-800">
+            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+            Fortalezas identificadas. Mantenga las prácticas asociadas a estos indicadores para
+            conservar el nivel de bienestar alcanzado.
+          </div>
+        </Card>
+
         <Card className="p-5">
           <SectionTitle
             title="Puntos de mejora"
@@ -395,7 +427,7 @@ export function ResultadosPage() {
           ) : (
             <div className="grid gap-2.5 sm:grid-cols-2">
               {puntosMejora.map((item) => (
-                <IndicadorMejora key={item.indicador_id} item={item} />
+                <IndicadorResultado key={item.indicador_id} item={item} />
               ))}
             </div>
           )}
@@ -405,80 +437,80 @@ export function ResultadosPage() {
             en la clasificación final.
           </div>
         </Card>
-
-        <Card className="p-5">
-          <SectionTitle title="Resumen del predio" description="Datos de la evaluación cerrada." />
-          <div className="space-y-2.5 text-xs">
-            <div className="flex items-center justify-between gap-3">
-              <span className="text-brand-900/45">Predio</span>
-              <Link
-                to={`/predios/${data.predio.id}`}
-                className="inline-flex items-center gap-1 font-bold text-brand-700 hover:text-brand-900"
-              >
-                <MapPin className="h-3.5 w-3.5" />
-                {data.predio.nombre}
-              </Link>
-            </div>
-            <div className="flex items-center justify-between gap-3">
-              <span className="text-brand-900/45">Municipio</span>
-              <span className="font-bold text-ink">{data.predio.municipio}</span>
-            </div>
-            <div className="flex items-center justify-between gap-3">
-              <span className="text-brand-900/45">Especie</span>
-              <Badge variant={data.predio.especie === 'OVINO' ? 'green' : 'earth'}>
-                {ETIQUETA_ESPECIE[data.predio.especie]}
-                {data.predio.especie === 'OVINO' && data.predio.es_ovino_de_lana ? ' · lana' : ''}
-              </Badge>
-            </div>
-            <div className="flex items-center justify-between gap-3">
-              <span className="text-brand-900/45">Sistema</span>
-              <span className="font-bold text-ink">
-                {ETIQUETA_SISTEMA[data.predio.sistema_productivo]}
-              </span>
-            </div>
-            <div className="flex items-center justify-between gap-3">
-              <span className="text-brand-900/45">Animales</span>
-              <span className="font-bold text-ink">{data.predio.numero_animales}</span>
-            </div>
-            <div className="flex items-center justify-between gap-3">
-              <span className="text-brand-900/45">Evaluador</span>
-              <span className="font-bold text-ink">{data.evaluador.nombre}</span>
-            </div>
-            <div className="flex items-center justify-between gap-3">
-              <span className="text-brand-900/45">Fecha de evaluación</span>
-              <span className="font-bold text-ink">{formatFecha(data.fecha)}</span>
-            </div>
-          </div>
-
-          {data.observaciones && (
-            <div className="mt-4 rounded-2xl bg-brand-50/70 p-3">
-              <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-brand-900/45">
-                Observaciones generales
-              </p>
-              <p className="mt-1 whitespace-pre-line text-[11px] leading-relaxed text-brand-900/60">
-                {data.observaciones}
-              </p>
-            </div>
-          )}
-
-          <div className="mt-4 flex flex-col gap-2">
-            <Link to={`/evaluaciones/${data.id}/reporte`}>
-              <Button variant="outline" className="w-full" icon={FileText}>
-                Abrir reporte imprimible
-              </Button>
-            </Link>
-            <Button
-              variant="ghost"
-              className="w-full"
-              icon={Download}
-              loading={descargando}
-              onClick={() => void descargar()}
-            >
-              Descargar PDF
-            </Button>
-          </div>
-        </Card>
       </div>
+
+      <Card className="mt-5 p-5">
+        <SectionTitle title="Resumen del predio" description="Datos de la evaluación cerrada." />
+        <div className="grid gap-x-8 gap-y-2.5 text-xs sm:grid-cols-2 lg:grid-cols-3">
+          <div className="flex items-center justify-between gap-3">
+            <span className="text-brand-900/45">Predio</span>
+            <Link
+              to={`/predios/${data.predio.id}`}
+              className="inline-flex items-center gap-1 font-bold text-brand-700 hover:text-brand-900"
+            >
+              <MapPin className="h-3.5 w-3.5" />
+              {data.predio.nombre}
+            </Link>
+          </div>
+          <div className="flex items-center justify-between gap-3">
+            <span className="text-brand-900/45">Municipio</span>
+            <span className="font-bold text-ink">{data.predio.municipio}</span>
+          </div>
+          <div className="flex items-center justify-between gap-3">
+            <span className="text-brand-900/45">Especie</span>
+            <Badge variant={data.predio.especie === 'OVINO' ? 'green' : 'earth'}>
+              {ETIQUETA_ESPECIE[data.predio.especie]}
+              {data.predio.especie === 'OVINO' && data.predio.es_ovino_de_lana ? ' · lana' : ''}
+            </Badge>
+          </div>
+          <div className="flex items-center justify-between gap-3">
+            <span className="text-brand-900/45">Sistema</span>
+            <span className="font-bold text-ink">
+              {ETIQUETA_SISTEMA[data.predio.sistema_productivo]}
+            </span>
+          </div>
+          <div className="flex items-center justify-between gap-3">
+            <span className="text-brand-900/45">Animales</span>
+            <span className="font-bold text-ink">{data.predio.numero_animales}</span>
+          </div>
+          <div className="flex items-center justify-between gap-3">
+            <span className="text-brand-900/45">Evaluador</span>
+            <span className="font-bold text-ink">{data.evaluador.nombre}</span>
+          </div>
+          <div className="flex items-center justify-between gap-3">
+            <span className="text-brand-900/45">Fecha de evaluación</span>
+            <span className="font-bold text-ink">{formatFecha(data.fecha)}</span>
+          </div>
+        </div>
+
+        {data.observaciones && (
+          <div className="mt-4 rounded-2xl bg-brand-50/70 p-3">
+            <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-brand-900/45">
+              Observaciones generales
+            </p>
+            <p className="mt-1 whitespace-pre-line text-[11px] leading-relaxed text-brand-900/60">
+              {data.observaciones}
+            </p>
+          </div>
+        )}
+
+        <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+          <Link to={`/evaluaciones/${data.id}/reporte`}>
+            <Button variant="outline" className="w-full" icon={FileText}>
+              Abrir reporte imprimible
+            </Button>
+          </Link>
+          <Button
+            variant="ghost"
+            className="w-full"
+            icon={Download}
+            loading={descargando}
+            onClick={() => void descargar()}
+          >
+            Descargar PDF
+          </Button>
+        </div>
+      </Card>
 
       <Card className="mt-5 p-5">
         <SectionTitle
