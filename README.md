@@ -103,6 +103,8 @@ Variables disponibles:
 | `DB_PASSWORD` | Contraseña de la base de datos | `mi_clave` |
 | `DB_NAME` | Nombre de la base de datos | `eba_bienestar` |
 | `JWT_SECRET` | Secreto para firmar tokens JWT. Use una cadena larga y aleatoria | `...` |
+| `GEMINI_API_KEY` | Clave de la API de Google Gemini (gratuita en Google AI Studio). Opcional; si no se define, las recomendaciones IA no están disponibles. | `AIza...` |
+| `GEMINI_MODEL` | Modelo de Gemini a usar (nivel gratuito recomendado: Flash). | `gemini-1.5-flash-latest` |
 | `PORT` | Puerto de la API | `4000` |
 | `CORS_ORIGIN` | Origen(es) permitidos, separados por coma | `http://localhost:5173` |
 | `NODE_ENV` | Entorno de ejecución | `development` |
@@ -116,12 +118,20 @@ DB_USER=root
 DB_PASSWORD=
 DB_NAME=eba_bienestar
 JWT_SECRET=cambie-este-secreto-por-una-cadena-larga-y-aleatoria
+
+# Recomendaciones con IA (Gemini)
+# Obtenga una clave gratuita en https://aistudio.google.com/
+GEMINI_API_KEY=
+GEMINI_MODEL=gemini-1.5-flash-latest
+
 PORT=4000
 CORS_ORIGIN=http://localhost:5173
 NODE_ENV=development
 ```
 
 > `backend/.env` contiene credenciales y está excluido del control de versiones. No lo publique.
+
+> **Clave de Gemini:** Obtenga una clave gratuita en [Google AI Studio](https://aistudio.google.com/). El modelo por defecto `gemini-1.5-flash-latest` está disponible en el nivel gratuito. Si no define `GEMINI_API_KEY`, la funcionalidad de recomendaciones IA no estará disponible (la aplicación sigue funcionando normalmente sin ella).
 
 ---
 
@@ -217,6 +227,7 @@ Si la API no puede conectarse a la base de datos, el proceso termina con un mens
 | `npm run test` | Ejecuta las pruebas unitarias del backend |
 | `npm run db:setup` | Crea la base y carga esquema + seed obligatorio |
 | `npm run db:seed:demo` | Carga usuarios, predio y evaluación de demostración |
+| `npm run db:update-criterios` | Actualiza los criterios oficiales de la norma en la BD (idempotente) |
 
 Comandos por workspace:
 
@@ -389,6 +400,9 @@ Prefijo: `/api`
 | `POST` | `/evaluaciones/:id/cerrar` | Valida y cierra la evaluación |
 | `DELETE` | `/evaluaciones/:id` | Elimina un borrador |
 | `GET` | `/evaluaciones/:id/reporte.pdf` | Descarga el reporte PDF |
+| `GET` | `/evaluaciones/:id/recomendaciones-ia` | Obtiene recomendaciones IA (solo CERRADA, acceso por rol/ownership) |
+| `POST` | `/evaluaciones/:id/recomendaciones-ia` | Genera/regenera recomendaciones IA con Gemini |
+| `DELETE` | `/evaluaciones/:id/recomendaciones-ia` | Elimina recomendación IA (solo ADMIN/EVALUADOR) |
 
 ### Usuarios
 
