@@ -1,4 +1,5 @@
 import type { z } from 'zod';
+import { construirPlanMejora } from '../domain/planMejora';
 import {
   calcularPuntajeLibertad,
   calcularPuntajeTotal,
@@ -10,6 +11,7 @@ import * as evaluacionRepository from '../repositories/evaluacion.repository';
 import * as indicadorRepository from '../repositories/indicador.repository';
 import * as libertadRepository from '../repositories/libertad.repository';
 import * as predioRepository from '../repositories/predio.repository';
+import * as recomendacionesIaRepository from '../repositories/recomendaciones_ia.repository';
 import * as usuarioRepository from '../repositories/usuario.repository';
 import type {
   AuthUser,
@@ -99,6 +101,7 @@ async function construirDetalle(
     evaluador: { id: evaluador.id, nombre: evaluador.nombre, correo: evaluador.correo },
     items,
     resumen: calcularResumen(items, libertades),
+    plan_mejora: construirPlanMejora(items),
   };
 }
 
@@ -271,5 +274,12 @@ export async function datosReporte(user: AuthUser, id: number): Promise<Evaluaci
   if (data.estado !== 'CERRADA') {
     throw conflict('El reporte solo está disponible para evaluaciones cerradas.');
   }
-  return data;
+
+  const recomendacion = await recomendacionesIaRepository.encontrarPorEvaluacion(id);
+  return {
+    ...data,
+    recomendacion_ia: recomendacion
+      ? { contenido: recomendacion.contenido, modelo: recomendacion.modelo }
+      : null,
+  };
 }

@@ -11,7 +11,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "db:setup": "tsx scripts/setup-db.ts",
-    "db:seed:demo": "tsx scripts/run-sql.ts db/seed_demo.sql"
+    "db:seed:demo": "tsx scripts/run-sql.ts db/seed_demo.sql",
+    "db:update-criterios": "tsx scripts/update-criterios.ts"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",

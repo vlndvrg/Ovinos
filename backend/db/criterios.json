@@ -1,0 +1,614 @@
+[
+  {
+    "indicador_id": 1,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.1.1",
+    "criterio_100": "El agua se encuentra disponible en bebederos chupos, zanjas o jagüeyes y por lo menos el 90% de los animales tienen acceso al Recurso.",
+    "criterio_55": "El agua se encuentra disponible en bebederos chupos, zanjas o jagüeyes y entre el 70% y el 89% de los animales tienen acceso al Recurso.",
+    "criterio_20": "El agua se encuentra disponible en bebederos chupos, zanjas o jagüeyes y entre el 40% y el 69% de los animales tienen acceso al Recurso.",
+    "criterio_0": "El agua se encuentra disponible en bebederos chupos, zanjas o jagüeyes y menos del 40% de los animales tienen acceso al Recurso. O El agua no se encuentra disponible en bebederos chupos, zanjas o jagüeyes"
+  },
+  {
+    "indicador_id": 2,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.1.2",
+    "criterio_100": "Por lo menos el 90% de los animales tienen acceso a una cantidad suficiente de agua y esta es de buena calidad.",
+    "criterio_55": "Entre el 70% y el 89% de los animales tienen acceso a una cantidad suficiente de agua y esta es de buena calidad.",
+    "criterio_20": "Entre el 40% y el 69% de los animales tienen acceso a una cantidad suficiente de agua y esta es de buena calidad. O Más del 69 % de los animales tienen acceso a una cantidad suficiente de agua y esta no es de buena calidad.",
+    "criterio_0": "Menos del 40% de los animales tienen acceso a una cantidad suficiente de agua. O Entre el 40% y el 69% de los animales tienen acceso a una cantidad suficiente de agua y esta no es de buena calidad."
+  },
+  {
+    "indicador_id": 3,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.1.3",
+    "criterio_100": "El 90% o más de los bebederos están en buen estado, están limpios, libres de moho y heces en la parte interior.",
+    "criterio_55": "Entre el 70% y el 89% de los bebederos están en buen estado, están limpios, libres de moho y heces en la parte interior, o el predio productivo no hace uso de bebederos o chupos, pero garantiza el acceso al agua.",
+    "criterio_20": "Entre el 40% y el 69% de los bebederos están en buen estado, están limpios, libres de moho y heces en la parte interior.",
+    "criterio_0": "Menos del 40 % de los bebederos están en buen estado o, se evidencia suciedad, moho o heces en la parte interior."
+  },
+  {
+    "indicador_id": 4,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.1.4",
+    "criterio_100": "El alimento se encuentra disponible en corrales y praderas y por lo menos el 90% de los animales tienen acceso al Recurso.",
+    "criterio_55": "El alimento se encuentra disponible en corrales y praderas y entre el 70% y el 89% de los animales tienen acceso al Recurso.",
+    "criterio_20": "El alimento se encuentra disponible en corrales y praderas y entre el 40% y el 69% de los animales tienen acceso al Recurso.",
+    "criterio_0": "El alimento se encuentra disponible en corrales y praderas y menos del 40% de los animales tienen acceso al Recurso. O El alimento no se encuentra disponible en corrales y praderas."
+  },
+  {
+    "indicador_id": 5,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.1.5",
+    "criterio_100": "El 90% o más de los animales cuentan con suficiente cantidad de alimento en comederos y praderas, el alimento ofrecido en comederos es de buena calidad y se cumplen con las medidas de comederos establecidas.",
+    "criterio_55": "Entre el 70% y el 89% de los animales cuentan con suficiente cantidad de alimento en comederos y praderas y el alimento ofrecido en comederos es de buena calidad O no se cumplen con las medidas de comederos establecidas.",
+    "criterio_20": "Entre el 40% y el 69% de los animales cuentan con suficiente cantidad de alimento en comederos y praderas, el alimento ofrecido en comederos es de buena calidad y se cumplen con las medidas de comederos establecidas.",
+    "criterio_0": "Menos del 40% o más de los animales cuentan con suficiente cantidad de alimento en comederos y praderas O El alimento ofrecido en comederos no es de buena calidad."
+  },
+  {
+    "indicador_id": 6,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.1.6",
+    "criterio_100": "Más del 90% de los comederos están en buen estado, están limpios, libres de moho, lama y heces en la parte interior. O todos los animales se alimentan exclusivamente en pastoreo.",
+    "criterio_55": "Entre el 70% y 89% de los comederos están en buen estado; están limpios, libres de moho, lama y heces en la parte interior.",
+    "criterio_20": "Entre el 40% y 69% de los comederos están en buen estado; están limpios, libres de moho, lama y heces en la parte interior.",
+    "criterio_0": "Menos del 40% de los comederos están en buen estado o, se evidencia moho, lama o heces en la parte interior."
+  },
+  {
+    "indicador_id": 7,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.1.7",
+    "criterio_100": "Los alimentos y suplementos comerciales se encuentran almacenados correctamente y cuentan con registro ICA.",
+    "criterio_55": "La norma solo define cumplimiento (100 puntos) o no cumplimiento (0 puntos) para este indicador.",
+    "criterio_20": "La norma solo define cumplimiento (100 puntos) o no cumplimiento (0 puntos) para este indicador.",
+    "criterio_0": "Los alimentos y suplementos no se encuentran almacenados correctamente o no cuentan con registro ICA."
+  },
+  {
+    "indicador_id": 8,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.1.8",
+    "criterio_100": "Más del 80% de los animales con puntuación de 3 o 4 en una escala de 1 a 5.",
+    "criterio_55": "Del 61 a 80% de los animales con puntuación de 3 o 4 en una escala de 1 a 5.",
+    "criterio_20": "Del 41 a 60% de los animales con puntuación de 3 o 4 en una escala de 1 a 5.",
+    "criterio_0": "Menor o igual a 40% de los animales con puntuación de 3 o 4 en una escala de 1 a 5."
+  },
+  {
+    "indicador_id": 9,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.2.1",
+    "criterio_100": "Menos del 10% de los animales observados presentan signos de estrés térmico.",
+    "criterio_55": "Entre el 10% y el 20% de los animales observados presentan signos de estrés térmico.",
+    "criterio_20": "Si entre el 21% y 30% los animales observados presentan signos de estrés térmico.",
+    "criterio_0": "Más del 30% de los animales observados presentan signos de estrés térmico"
+  },
+  {
+    "indicador_id": 10,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.2.2",
+    "criterio_100": "Mas del 90 % de los animales tienen acceso a sombra en corrales y potreros.",
+    "criterio_55": "Entre el 70% y 89% de los animales tienen acceso a sombra en corrales y potreros.",
+    "criterio_20": "Entre el 40% y 69% de los animales tienen acceso a sombra en corrales y potreros.",
+    "criterio_0": "Menos del 40% de los animales no tienen acceso a sombra en corrales y potreros."
+  },
+  {
+    "indicador_id": 11,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.2.3",
+    "criterio_100": "Hay presencia de encharcamientos en menos del 10% de los corrales o potreros y existen suficientes zonas de descanso sin encharcamiento.",
+    "criterio_55": "Hay presencia de encharcamientos entre el 10 % y 20% de los corrales o potreros y existen suficientes zonas de descanso sin encharcamiento",
+    "criterio_20": "Hay presencia de encharcamientos entre el 21% y 30% de los corrales o potreros y existen zonas de descanso sin encharcamiento",
+    "criterio_0": "Hay presencia de encharcamientos en más del 30% de los corrales o potreros y no existen zonas de descanso."
+  },
+  {
+    "indicador_id": 12,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.2.4",
+    "criterio_100": "Más del 90% de los espacios revisados se ajusta a los mínimos establecidos o se encuentra por encima de estos.",
+    "criterio_55": "El entre el 70% y 89 % de los espacios revisados se ajusta a los mínimos establecidos o se encuentra por encima de estos.",
+    "criterio_20": "El entre el 40% y 69 % de los espacios revisados se ajusta a los mínimos establecidos o se encuentra por encima de estos.",
+    "criterio_0": "Menos del 40% de los espacios revisados se ajusta a los mínimos establecidos."
+  },
+  {
+    "indicador_id": 13,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.2.5",
+    "criterio_100": "En el 100% de los corrales el material del piso no presenta riesgo ni causa lesiones en los animales, se encuentran en buen estado de conservación y limpieza no se presenta acumulación de residuos o algún tipo de materiales extraños al interior de los corrales.",
+    "criterio_55": "Entre el 70% y 99% de los corrales el material del piso no presenta riesgo ni causa lesiones en los animales, se encuentran en buen estado de conservación y limpieza y no se presenta acumulación de residuos o algún tipo de materiales extraños al interior de los corrales.",
+    "criterio_20": "Entre el 40% y 69% de los corrales el material del piso no presenta riesgo ni causa lesiones en los animales, se encuentran en buen estado de conservación y limpieza y no se presenta acumulación de residuos o algún tipo de materiales extraños al interior de los corrales.",
+    "criterio_0": "Menos del 40 % de los corrales el material del piso no presenta riesgo ni causa lesiones en los animales, se encuentran en buen estado de conservación y limpieza y no se presenta acumulación de residuos o algún tipo de materiales extraños al interior de los corrales."
+  },
+  {
+    "indicador_id": 14,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.2.6",
+    "criterio_100": "El 100% de las camas inspeccionadas son suaves, contienen suficiente material, no permiten la visualización de áreas del suelo, son de fácil limpieza, desinfección, no tienen elementos que puedan lesionar o causar heridas a los animales, sin olor a amoniaco.",
+    "criterio_55": "Si entre el 70% y 99% de las camas inspeccionadas son suaves, contienen suficiente material, no permiten la visualización de áreas del suelo, son de fácil limpieza, desinfección, no tienen elementos que puedan lesionar o causar heridas a los animales, sin olor a amoniaco.",
+    "criterio_20": "Entre el 40% y 69% de las camas inspeccionadas son suaves, contienen suficiente material, no permiten la visualización de áreas del suelo, son de fácil limpieza, desinfección, no tienen elementos que puedan lesionar o causar heridas a los animales, sin olor a amoniaco.",
+    "criterio_0": "Menos del 40% de las camas inspeccionadas son suaves, contienen suficiente material, no permiten la visualización de áreas del suelo, son de fácil limpieza, desinfección, no tienen elementos que puedan lesionar o causar heridas a los animales, sin olor a amoniaco."
+  },
+  {
+    "indicador_id": 15,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.2.7",
+    "criterio_100": "El 100% de los corrales cuentan con iluminación para realizar la inspección de todos los animales y áreas.",
+    "criterio_55": "Entre el 70% y el 99% de los corrales cuentan con iluminación que permite la inspección de todos los animales y áreas.",
+    "criterio_20": "Entre el 50% y el 69% de los corrales cuentan con iluminación que permite la inspección de todos los animales y áreas.",
+    "criterio_0": "Menos del 49% de los corrales cuentan con iluminación que permite la inspección de todos los animales y áreas."
+  },
+  {
+    "indicador_id": 16,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.2.8",
+    "criterio_100": "El 100% de los corrales cuentan con ventilación para evitar la concentración de olores.",
+    "criterio_55": "Entre el 70% y el 99% de los corrales cuentan con ventilación que evita la concentración de olores.",
+    "criterio_20": "Entre el 50% y el 69% de los corrales cuentan con ventilación que evita la concentración de olores.",
+    "criterio_0": "Menos del 49% de los corrales cuentan con ventilación que evita la concentración de olores."
+  },
+  {
+    "indicador_id": 17,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.3.1",
+    "criterio_100": "Menos del 3% de los animales presentan secreción nasal, o tos.",
+    "criterio_55": "Entre el 4% y 7% de los animales presentan secreción nasal, o tos.",
+    "criterio_20": "Entre el 8% y el 10 % de los animales presentan secreción nasal o tos.",
+    "criterio_0": "Más del 10 % de los animales presentan secreción nasal, ocular y/o tos."
+  },
+  {
+    "indicador_id": 18,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.3.2",
+    "criterio_100": "Menos del 3% de los animales presentan secreción ocular.",
+    "criterio_55": "Entre el 4% y 7% de los animales presentan secreción ocular.",
+    "criterio_20": "Entre el 8% y el 10 % de los animales presentan secreción ocular.",
+    "criterio_0": "Más del 10 % de los animales presentan secreción ocular."
+  },
+  {
+    "indicador_id": 19,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.3.3",
+    "criterio_100": "Menos del 3% de los animales presentan FAMACHA con calificación 4 o 5.",
+    "criterio_55": "Del 4% al 6% de los animales presentan FAMACHA con calificación 4 o 5.",
+    "criterio_20": "Del 7% al 10% de los animales presentan FAMACHA con calificación 4 o 5.",
+    "criterio_0": "Más del 10% de los animales presentan FAMACHA con calificación 4 o 5."
+  },
+  {
+    "indicador_id": 20,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.3.4",
+    "criterio_100": "No se realiza topizado ni descorne. En el caso de realizarse topizado o descorne este se realiza antes de los 10 días de edad y existe evidencia del uso de analgesia y anestesia. Donde todos los animales se encuentren en la misma condición.",
+    "criterio_55": "Se realiza topizado o descorne a edad mayor a 10 días y hay evidencia de uso de anestesia y/o analgesia.",
+    "criterio_20": "La norma no define un nivel de 20 puntos para este indicador; si no cumple las condiciones de 55 puntos, corresponde 0.",
+    "criterio_0": "Se realiza topizado o descorne a edad mayor a 10 días y no hay evidencia de uso de anestesia y/o analgesia."
+  },
+  {
+    "indicador_id": 21,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.3.5",
+    "criterio_100": "En ningún animal se observan ectoparásitos.",
+    "criterio_55": "Entre el 1% y 10% de los animales se observa ectoparásitos.",
+    "criterio_20": "Entre el 10% y 20% de los animales se observa ectoparásitos.",
+    "criterio_0": "Más del 20% de los animales presentan ectoparásitos."
+  },
+  {
+    "indicador_id": 22,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.3.6",
+    "criterio_100": "Hasta el 3% de los animales presentan alopecias, úlceras, heridas o lesiones en el cuerpo y estas están siendo tratadas.",
+    "criterio_55": "Entre el 4 y 6% de los animales presentan alopecias, úlceras, heridas o lesiones en el cuerpo y estas están siendo tratadas.",
+    "criterio_20": "Del 7% al 10% de los animales presentan alopecias, úlceras, heridas o lesiones en el cuerpo y estas están siendo tratadas, o Menos del 7% de animales presentan úlceras, heridas o lesiones en el cuerpo y estas no son tratadas.",
+    "criterio_0": "Más del 10% de los animales presentan alopecias, úlceras, heridas o lesiones en el cuerpo y no son tratadas."
+  },
+  {
+    "indicador_id": 23,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.3.7",
+    "criterio_100": "En los animales evaluados se observa una prevalencia de casos de mastitis clínica menor al 3%.",
+    "criterio_55": "En los animales evaluados se observa una prevalencia de casos de mastitis clínica entre el 3% y 4%.",
+    "criterio_20": "En los animales evaluados se observa una prevalencia de casos de mastitis clínica entre el 4.1% y 5%.",
+    "criterio_0": "En los animales evaluados se observa una prevalencia de casos de mastitis mayor al 5% de mastitis clínica."
+  },
+  {
+    "indicador_id": 24,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.3.8",
+    "criterio_100": "No se realiza castración. Se realiza castración con evidencia de uso de anestesia y/o analgesia donde se evite el uso de bandas constrictoras, La intervención quirúrgica es realizada por MV o MVZ y, es realizada a edad menor de 15 días. En caso de castración química se realiza con productos con registro ICA atendiendo a las recomendaciones del rotulado del producto.",
+    "criterio_55": "Se realiza castración sin importar el método con evidencia de uso de anestesia y analgesia. La intervención quirúrgica es realizada por MV o MVZ y, Es realizada a edad menor de 15 días.",
+    "criterio_20": "La norma no define un nivel de 20 puntos para este indicador; si no cumple las condiciones de 55 puntos, corresponde 0.",
+    "criterio_0": "Se realiza castración y, no hay evidencia de uso de anestesia y/o analgesia o, La intervención quirúrgica no es realizada por MV o MVZ o, es realizada a edad mayor a 15 días."
+  },
+  {
+    "indicador_id": 25,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.3.9",
+    "criterio_100": "No se realiza descole o En el 100% de los animales descolados se observa descole largo y, Hay evidencia de uso de anestesia y/o analgesia y, El descole con anillo de caucho es realizado a edad menor de 15 días.",
+    "criterio_55": "En 100% de los animales descolados se observa descole largo y, no hay evidencia de uso de anestesia y/o analgesia o, El descole con anillo de caucho es realizado a edad mayor a 15 días.",
+    "criterio_20": "La norma no define un nivel de 20 puntos para este indicador; si no cumple las condiciones de 55 puntos, corresponde 0.",
+    "criterio_0": "Se realiza descole corto."
+  },
+  {
+    "indicador_id": 26,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.3.10",
+    "criterio_100": "Más del 3 % de los animales presentan puntuación de 4 o 5.",
+    "criterio_55": "Entre el 4% y el 6% de los animales presentan puntuación de 4 o 5.",
+    "criterio_20": "Entre el 7% y 10 % de los animales presentan puntuación de 4 o 5.",
+    "criterio_0": "Más del 10% de los animales presentan puntuación de 4 o 5."
+  },
+  {
+    "indicador_id": 27,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.3.11",
+    "criterio_100": "Hasta el 5% de los animales presentan cojeras.",
+    "criterio_55": "Hasta el 8% de los animales presentan cojeras.",
+    "criterio_20": "Entre el 9% y el 12% de los animales presentan cojeras.",
+    "criterio_0": "Más del 13% de los animales presentan cojeras."
+  },
+  {
+    "indicador_id": 28,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.3.12",
+    "criterio_100": "Hasta el 5% de los animales presentan sobre crecimiento de pezuñas.",
+    "criterio_55": "Hasta el 8% de los animales presentan sobre crecimiento de pezuñas.",
+    "criterio_20": "Entre el 9% y el 12% de los animales presentan sobre crecimiento de pezuñas.",
+    "criterio_0": "Más del 13% de los animales presentan sobre crecimiento de pezuñas."
+  },
+  {
+    "indicador_id": 29,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.3.13",
+    "criterio_100": "Mortalidad menor o igual al 5% en corderos o cabritos y del 3% en animales adultos y se llevan registros escritos.",
+    "criterio_55": "Mortalidad menor o igual al 5% en corderos o cabritos y del 3% en animales adultos, pero no se llevan registros.",
+    "criterio_20": "Mortalidad entre el 5% y 6% en corderos o cabritos y entre el 3% y 5% en animales adultos.",
+    "criterio_0": "Mortalidad entre el 6% y 7% en corderos o cabritos y del 6% al 8% en animales adultos. O No proporciona información."
+  },
+  {
+    "indicador_id": 30,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.3.14",
+    "criterio_100": "Se cumple con todas las BPUMV",
+    "criterio_55": "Se utilizan medicamentos con registro ICA, no se usan sustancias prohibidas o promotores de crecimiento no autorizados por el ICA, los medicamentos son prescritos por MV o MVZ y se llevan registro de tratamientos veterinarios y no se emplean medicamentos vencidos. Se evidencia mal almacenamiento de medicamentos o, las agujas están en mal estado o, el lugar de almacenamiento está sucio.",
+    "criterio_20": "Se utilizan medicamento con registro ICA, no se usan sustancias prohibidas o promotores de crecimiento no autorizados por el ICA, y los medicamentos son prescritos por MV o MVZ y se llevan registro de tratamientos veterinarios y, Se emplean medicamentos vencidos o, mal almacenamiento de medicamentos o, las agujas están en mal estado o, el lugar de almacenamiento está sucio.",
+    "criterio_0": "Utilizan medicamentos sin registro ICA o, Se usan sustancias prohibidas o promotores de crecimiento no autorizados por el ICA, o Los medicamentos no son prescritos por MV o MVZ o, No se llevan registro de tratamientos veterinarios"
+  },
+  {
+    "indicador_id": 31,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.3.15",
+    "criterio_100": "Existe plan sanitario escrito, firmado por MV o MVZ e implementado y con registros.",
+    "criterio_55": "Existen registros de vacunaciones, control de parásitos internos y externos, pero no hay plan sanitario escrito.",
+    "criterio_20": "Existe plan sanitario, pero no está implementado y no hay registros.",
+    "criterio_0": "No hay plan sanitario ni registros de vacunaciones, no existe evidencia del control de parásitos internos y externos ni evidencias de implementación."
+  },
+  {
+    "indicador_id": 32,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.4.1",
+    "criterio_100": "En todos los grupos de animales estos se mantienen tranquilos ante la presencia del manejador, llegando a moverse, pero sin agitación.",
+    "criterio_55": "Los animales se muestran tranquilos ante el humano, pero atentos a sus movimientos.",
+    "criterio_20": "Los animales se muestran intranquilos ante el humano intentando esconderse o huir.",
+    "criterio_0": "Los animales se alejan enérgicamente, saltando unos sobre otros o golpeándose contra las mallas o cercas."
+  },
+  {
+    "indicador_id": 33,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.4.2",
+    "criterio_100": "Todas las personas demuestran conocimiento en bienestar y cuentan con certificación escrita.",
+    "criterio_55": "Más del 50% de las personas demuestran conocimiento en temas de bienestar y cuentan con certificación escrita. O El 100% de las personas demuestran conocimiento en bienestar animal pero no poseen certificación.",
+    "criterio_20": "Más del 50% de las personas demuestran conocimiento en temas de bienestar y no cuentan con certificación escrita.",
+    "criterio_0": "Menos del 50% de las personas demuestran conocimiento en bienestar y no cuentan con certificación."
+  },
+  {
+    "indicador_id": 34,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.5.1",
+    "criterio_100": "Ningún animal amarrado o con palos amarrados al cuello que limiten su movimiento.",
+    "criterio_55": "Menos del 2% de animales amarrados o con palos amarrados al cuello que limiten su movimiento.",
+    "criterio_20": "Entre el 2% y el 5% de animales amarrados o con palos amarrados al cuello que limiten su movimiento.",
+    "criterio_0": "M?s del 5% de animales amarrados o con palos amarrados al cuello que limiten su movimiento."
+  },
+  {
+    "indicador_id": 35,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.5.2",
+    "criterio_100": "Ningún animal se observa aislado del resto del grupo.",
+    "criterio_55": "Menos del 5% de animales se observa aislado del resto del grupo.",
+    "criterio_20": "Entre el 5% y el 10% de animales se observa aislado del resto del grupo.",
+    "criterio_0": "Más del 10% de animales se observa aislado del resto del grupo."
+  },
+  {
+    "indicador_id": 36,
+    "tipo_predio": "PRODUCTIVO",
+    "seccion": "7.5.3",
+    "criterio_100": "Los animales cuentan con un potrero de descanso y/o elementos de enriquecimiento ambiental.",
+    "criterio_55": "La norma solo define cumplimiento (100 puntos) o no cumplimiento (0 puntos) para este indicador.",
+    "criterio_20": "La norma solo define cumplimiento (100 puntos) o no cumplimiento (0 puntos) para este indicador.",
+    "criterio_0": "No cuentan con potrero de descanso ni elementos de enriquecimiento ambiental."
+  },
+  {
+    "indicador_id": 1,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.1.1",
+    "criterio_100": "El agua se encuentra disponible en bebederos chupos, zanjas o jagüeyes y por lo menos el 90% de los animales tienen acceso al recurso.",
+    "criterio_55": "El agua se encuentra disponible en bebederos chupos, zanjas o jagüeyes y entre el 70% y el 89% de los animales tienen acceso al recurso.",
+    "criterio_20": "El agua se encuentra disponible en bebederos chupos, zanjas o jagüeyes y entre el 40% y el 69% de los animales tienen acceso al recurso.",
+    "criterio_0": "El agua se encuentra disponible en bebederos chupos, zanjas o jagüeyes y menos del 40% de los animales tienen acceso al recurso. O El agua no se encuentra disponible en bebederos chupos, zanjas o jagüeyes"
+  },
+  {
+    "indicador_id": 2,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.1.2",
+    "criterio_100": "Por lo menos el 90% de los animales tienen acceso a una cantidad suficiente de agua y esta es de buena calidad.",
+    "criterio_55": "Entre el 70% y el 89% de los animales tienen acceso a una cantidad suficiente de agua y esta es de buena calidad.",
+    "criterio_20": "Entre el 40% y el 69% de los animales tienen acceso a una cantidad suficiente de agua y esta es de buena calidad. O Más del 69 % de los animales tienen acceso a una cantidad suficiente de agua y esta no es de buena calidad.",
+    "criterio_0": "Menos del 40% de los animales tienen acceso a una cantidad suficiente de agua. O Entre el 40% y el 69% de los animales tienen acceso a una cantidad suficiente de agua y esta no es de buena calidad."
+  },
+  {
+    "indicador_id": 3,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.1.3",
+    "criterio_100": "Por lo menos el 90% de los bebederos están en buen estado, están limpios, libres de moho y heces en la parte interior.",
+    "criterio_55": "Entre el 70% y el 89% de los bebederos están en buen estado, están limpios, libres de moho y heces en la parte interior, o el predio productivo no hace uso de bebederos o chupos, pero garantiza el acceso al agua.",
+    "criterio_20": "Entre el 40% y el 69% de los bebederos están en buen estado, están limpios, libres de moho y heces en la parte interior.",
+    "criterio_0": "Menos del 40 % de los bebederos están en buen estado o, se evidencia suciedad, moho o heces en la parte interior."
+  },
+  {
+    "indicador_id": 4,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.1.4",
+    "criterio_100": "El alimento se encuentra disponible y por lo menos el 90% de los animales tienen acceso al Recurso.",
+    "criterio_55": "El alimento se encuentra disponible y entre el 70% y el 89% de los animales tienen acceso al Recurso.",
+    "criterio_20": "El alimento se encuentra disponible y entre el 40% y el 69% de los animales tienen acceso al Recurso.",
+    "criterio_0": "El alimento se encuentra disponible y menos del 40% de los animales tienen acceso al Recurso. O El alimento no se encuentra disponible."
+  },
+  {
+    "indicador_id": 5,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.1.5",
+    "criterio_100": "El 90% o más de los animales cuentan con suficiente cantidad de alimento y este es de buena calidad.",
+    "criterio_55": "Entre el 70% y el 89% de los animales cuentan con suficiente cantidad de alimento y este es de buena calidad.",
+    "criterio_20": "Entre el 40% y el 69% de los animales cuentan con suficiente cantidad de alimento y este es de buena calidad.",
+    "criterio_0": "Menos del 40% o más de los animales cuentan con suficiente cantidad de alimento y este es de buena calidad."
+  },
+  {
+    "indicador_id": 6,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.1.6",
+    "criterio_100": "Por lo menos el 90% de los comederos están en buen estado, están limpios, libres de moho, lama y heces en la parte interior. O todos los animales se alimentan exclusivamente en pastoreo.",
+    "criterio_55": "Entre el 70% y 89% de los comederos están en buen estado; están limpios, libres de moho, lama y heces en la parte interior.",
+    "criterio_20": "Entre el 40% y 69% de los comederos están en buen estado; están limpios, libres de moho, lama y heces en la parte interior.",
+    "criterio_0": "Menos del 40% de los comederos están en buen estado o, se evidencia moho, lama o heces en la parte interior."
+  },
+  {
+    "indicador_id": 8,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.1.7",
+    "criterio_100": "Más del 80% de los animales con puntuación de 3 o 4 en una escala de 1 a 5.",
+    "criterio_55": "De 61 a 80% de los animales con puntuación de 3 o 4 en una escala de 1 a 5.",
+    "criterio_20": "De 41 a 60% de los animales con puntuación de 3 o 4 en una escala de 1 a 5.",
+    "criterio_0": "Menor o igual a 40% de los animales con puntuación de 3 o 4 en una escala de 1 a 5."
+  },
+  {
+    "indicador_id": 9,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.2.1",
+    "criterio_100": "Menos del 10% de los animales presentan signos de estrés térmico.",
+    "criterio_55": "Entre el 11 % y el 20% de los animales presentan signos de estrés térmico.",
+    "criterio_20": "Si entre el 21% y 30% los animales presentan signos de estrés térmico.",
+    "criterio_0": "Más del 30% de los animales presentan signos de estrés térmico"
+  },
+  {
+    "indicador_id": 10,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.2.2",
+    "criterio_100": "Mas del 90 % de los animales tienen acceso a sombra en corrales y potreros.",
+    "criterio_55": "Entre el 70% y 89% de los animales tienen acceso a sombra en corrales y potreros.",
+    "criterio_20": "Entre el 40% y 69% de los animales tienen acceso a sombra en corrales y potreros.",
+    "criterio_0": "Menos del 40% de los animales no tienen acceso a sombra en corrales y potreros."
+  },
+  {
+    "indicador_id": 11,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.2.3",
+    "criterio_100": "Hay presencia de encharcamientos en menos del 10% de los corrales o potreros y existen suficientes zonas de descanso sin encharcamiento.",
+    "criterio_55": "Hay presencia de encharcamientos entre el 11 % y 20% de los corrales o potreros y existen suficientes zonas de descanso sin encharcamiento",
+    "criterio_20": "Hay presencia de encharcamientos entre el 21% y 30% de los corrales o potreros y existen zonas de descanso sin encharcamiento",
+    "criterio_0": "Hay presencia de encharcamientos en más del 30% de los corrales o potreros y no existen zonas de descanso."
+  },
+  {
+    "indicador_id": 12,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.2.4",
+    "criterio_100": "Más del 90% de los espacios revisados se ajusta a los mínimos establecidos o se encuentra por encima de estos",
+    "criterio_55": "El entre el 70% y 89 % de los espacios revisados se ajusta a los mínimos establecidos o se encuentra por encima de estos.",
+    "criterio_20": "El entre el 40% y 69 % de los espacios revisados se ajusta a los mínimos establecidos o se encuentra por encima de estos.",
+    "criterio_0": "Menos del 40% de los espacios revisados se ajusta a los mínimos establecidos."
+  },
+  {
+    "indicador_id": 13,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.2.5",
+    "criterio_100": "En el 100% de los corrales el material del piso no presenta riesgo ni causa lesiones en los animales, se encuentran en buen estado de conservación y limpieza no se presenta acumulación de residuos o algún tipo de materiales extraños al interior de los corrales.",
+    "criterio_55": "Entre el 70% y 99% de los corrales el material del piso no presenta riesgo ni causa lesiones en los animales, se encuentran en buen estado de conservación y limpieza y no se presenta acumulación de residuos o algún tipo de materiales extraños al interior de los corrales.",
+    "criterio_20": "Entre el 40% y 69% de los corrales el material del piso no presenta riesgo ni causa lesiones en los animales, se encuentran en buen estado de conservación y limpieza y no se presenta acumulación de residuos o algún tipo de materiales extraños al interior de los corrales.",
+    "criterio_0": "Menos del 40 % de los corrales el material del piso no presenta riesgo ni causa lesiones en los animales, se encuentran en buen estado de conservación y limpieza y no se presenta acumulación de residuos o algún tipo de materiales extraños al interior de los corrales."
+  },
+  {
+    "indicador_id": 14,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.2.6",
+    "criterio_100": "El 100% de las camas inspeccionadas son suaves, contienen suficiente material, no permiten la visualización de áreas del suelo, son de fácil limpieza, desinfección, no tienen elementos que puedan lesionar o causar heridas a los animales, sin olor a amoniaco.",
+    "criterio_55": "Si entre el 70% y 99% de las camas inspeccionadas son suaves, contienen suficiente material, no permiten la visualización de áreas del suelo, son de fácil limpieza, desinfección, no tienen elementos que puedan lesionar o causar heridas a los animales, sin olor a amoniaco.",
+    "criterio_20": "Entre el 40% y 69% de las camas inspeccionadas son suaves, contienen suficiente material, no permiten la visualización de áreas del suelo, son de fácil limpieza, desinfección, no tienen elementos que puedan lesionar o causar heridas a los animales, sin olor a amoniaco.",
+    "criterio_0": "Menos del 40% de las camas inspeccionadas son suaves, contienen suficiente material, no permiten la visualización de áreas del suelo, son de fácil limpieza, desinfección, no tienen elementos que puedan lesionar o causar heridas a los animales, sin olor a amoniaco."
+  },
+  {
+    "indicador_id": 15,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.2.7",
+    "criterio_100": "El 100% de los corrales cuentan con iluminación para realizar la inspección de todos los animales y áreas.",
+    "criterio_55": "Entre el 70% y el 99% de los corrales cuentan con iluminación que permite la inspección de todos los animales y áreas.",
+    "criterio_20": "Entre el 50% y el 69% de los corrales cuentan con iluminación que permite la inspección de todos los animales y áreas.",
+    "criterio_0": "Menos del 49% de los corrales cuentan con iluminación que permite la inspección de todos los animales y áreas."
+  },
+  {
+    "indicador_id": 16,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.2.8",
+    "criterio_100": "El 100% de los corrales cuentan con ventilación para evitar la concentración de olores.",
+    "criterio_55": "Entre el 70% y el 99% de los corrales cuentan con ventilación que evita la concentración de olores.",
+    "criterio_20": "Entre el 50% y el 69% de los corrales cuentan con ventilación que evita la concentración de olores.",
+    "criterio_0": "Menos del 49% de los corrales cuentan con ventilación que evita la concentración de olores."
+  },
+  {
+    "indicador_id": 17,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.3.1",
+    "criterio_100": "Menos del 3% de los animales presentan secreción nasal, o tos.",
+    "criterio_55": "Entre el 4% y 7% de los animales presentan secreción nasal, o tos.",
+    "criterio_20": "Entre el 8% y el 10 % de los animales presentan secreción nasal o tos.",
+    "criterio_0": "Más del 10 % de los animales presentan secreción nasal, o tos."
+  },
+  {
+    "indicador_id": 18,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.3.2",
+    "criterio_100": "Menos del 3% de los animales presentan secreción ocular.",
+    "criterio_55": "Entre el 4% y 7% de los animales presentan secreción ocular.",
+    "criterio_20": "Entre el 8% y el 10 % de los animales presentan secreción ocular.",
+    "criterio_0": "Más del 10 % de los animales presentan secreción ocular."
+  },
+  {
+    "indicador_id": 19,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.3.3",
+    "criterio_100": "Menos del 3% de los animales presentan FAMACHA con calificación 4 o 5.",
+    "criterio_55": "Del 4% al 6% de los animales presentan FAMACHA con calificación 4 o 5.",
+    "criterio_20": "Del 7% al 10% de los animales presentan FAMACHA con calificación 4 o 5.",
+    "criterio_0": "Más del 10% de los animales presentan FAMACHA con calificación 4 o 5."
+  },
+  {
+    "indicador_id": 20,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.3.4",
+    "criterio_100": "No se realiza topizado ni descorne. En el caso de realizarse topizado o descorne este se realiza antes de los 10 días de edad y existe evidencia del uso de analgesia y anestesia.",
+    "criterio_55": "Se realiza topizado o descorne a edad mayor a 10 días y hay evidencia de uso de anestesia y/o analgesia.",
+    "criterio_20": "La norma no define un nivel de 20 puntos para este indicador; si no cumple las condiciones de 55 puntos, corresponde 0.",
+    "criterio_0": "Se realiza topizado o descorne a edad mayor a 10 días y no hay evidencia de uso de anestesia y/o analgesia."
+  },
+  {
+    "indicador_id": 21,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.3.5",
+    "criterio_100": "En ningún animal se observan ectoparásitos.",
+    "criterio_55": "Entre el 1% y 10% de los animales se observa ectoparásitos.",
+    "criterio_20": "Entre el 10% y 20% de los animales se observa ectoparásitos.",
+    "criterio_0": "Más del 20% de los animales presentan ectoparásitos."
+  },
+  {
+    "indicador_id": 22,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.3.6",
+    "criterio_100": "Hasta el 3% de los animales presentan alopecias, úlceras, heridas o lesiones en el cuerpo y estas están siendo tratadas.",
+    "criterio_55": "Entre el 4 y 6% de los animales presentan alopecias, úlceras, heridas o lesiones en el cuerpo y estas están siendo tratadas.",
+    "criterio_20": "Del 7% al 10% de los animales presentan alopecias, úlceras, heridas o lesiones en el cuerpo y estas están siendo tratadas, o Menos del 7% de animales presentan úlceras, heridas o lesiones en el cuerpo y estas no son tratadas.",
+    "criterio_0": "Más del 10% de los animales presentan alopecias, úlceras, heridas o lesiones en el cuerpo y no son tratadas."
+  },
+  {
+    "indicador_id": 23,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.3.7",
+    "criterio_100": "En los animales evaluados se observa una prevalencia de casos de mastitis clínica menor al 3%.",
+    "criterio_55": "En los animales evaluados se observa una prevalencia de casos de mastitis clínica entre el 3% y 4%.",
+    "criterio_20": "En los animales evaluados se observa una prevalencia de casos de mastitis clínica entre el 4.1% y 5%.",
+    "criterio_0": "En los animales evaluados se observa una prevalencia de casos de mastitis mayor al 5% de mastitis clínica."
+  },
+  {
+    "indicador_id": 24,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.3.8",
+    "criterio_100": "No se realiza castración. Se realiza castración con evidencia de uso de anestesia y/o analgesia donde se evite el uso de bandas constrictoras, La intervención quirúrgica es realizada por MV o MVZ y, Es realizada a edad menor de 15 días. En caso de castración química se realiza con productos con registro ICA atendiendo a las recomendaciones del rotulado del producto.",
+    "criterio_55": "Se realiza castración sin importar el método con evidencia de uso de anestesia y analgesia La intervención quirúrgica es realizada por MV o MVZ y, Es realizada a edad menor de 15 días.",
+    "criterio_20": "La norma no define un nivel de 20 puntos para este indicador; si no cumple las condiciones de 55 puntos, corresponde 0.",
+    "criterio_0": "Se realiza castración y, No hay evidencia de uso de anestesia y/o analgesia o, La intervención quirúrgica no es realizada por MV o MVZ o, Es realizada a edad mayor a 15 días."
+  },
+  {
+    "indicador_id": 25,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.3.9",
+    "criterio_100": "No se realiza descole o En el 100% de los animales descolados se observa descole largo y hay evidencia de uso de anestesia y/o analgesia y, El descole con anillo de caucho es realizado a edad menor de 15 días.",
+    "criterio_55": "En 100% de los animales descolados se observa descole largo y, No hay evidencia de uso de anestesia y/o analgesia o, El descole con anillo de caucho es realizado a edad mayor a 15 días.",
+    "criterio_20": "La norma no define un nivel de 20 puntos para este indicador; si no cumple las condiciones de 55 puntos, corresponde 0.",
+    "criterio_0": "Se realiza descole corto."
+  },
+  {
+    "indicador_id": 26,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.3.10",
+    "criterio_100": "Más del 3 % de los animales presentan puntuación de 4 o 5.",
+    "criterio_55": "Entre el 4% y el 6% de los animales presentan puntuación de 4 o 5.",
+    "criterio_20": "Entre el 7% y 10 % de los animales presentan puntuación de 4 o 5.",
+    "criterio_0": "Más del 10% de los animales presentan puntuación de 4 o 5."
+  },
+  {
+    "indicador_id": 27,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.3.11",
+    "criterio_100": "Hasta el 5% de los animales presentan cojeras.",
+    "criterio_55": "Hasta el 8% de los animales presentan cojeras.",
+    "criterio_20": "Entre el 9% y el 12% de los animales presentan cojeras.",
+    "criterio_0": "Más del 13% de los animales presentan cojeras."
+  },
+  {
+    "indicador_id": 28,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.3.12",
+    "criterio_100": "Hasta el 5% de los animales presentan sobre crecimiento de pezuñas.",
+    "criterio_55": "Hasta el 8% de los animales presentan sobre crecimiento de pezuñas.",
+    "criterio_20": "Entre el 9% y el 12% de los animales presentan sobre crecimiento de pezuñas.",
+    "criterio_0": "Más del 13% de los animales presentan sobre crecimiento de pezuñas."
+  },
+  {
+    "indicador_id": 29,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.3.13",
+    "criterio_100": "Mortalidad menor o igual al 5% en corderos o cabritos y del 3% en animales adultos y se llevan registros escritos.",
+    "criterio_55": "Mortalidad menor o igual al 5% en corderos o cabritos y del 3% en animales adultos, pero no se llevan registros.",
+    "criterio_20": "Mortalidad entre el 5% y 6% en corderos o cabritos y entre el 3% y 5% en animales adultos.",
+    "criterio_0": "Mortalidad entre el 6% y 7% en corderos o cabritos y del 6% al 8% en animales adultos. O No proporciona información."
+  },
+  {
+    "indicador_id": 32,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.4.1",
+    "criterio_100": "En todos los grupos de animales estos se mantienen tranquilos ante la presencia del manejador, llegando a moverse, pero sin agitación.",
+    "criterio_55": "Los animales se muestran tranquilos ante el humano, pero atentos a sus movimientos.",
+    "criterio_20": "Los animales se muestran intranquilos ante el humano intentando esconderse o huir.",
+    "criterio_0": "Los animales se alejan enérgicamente, saltando unos sobre otros o golpeándose contra las mallas o cercas."
+  },
+  {
+    "indicador_id": 33,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.4.2",
+    "criterio_100": "Todas las personas demuestran conocimiento en bienestar y cuentan con certificación escrita.",
+    "criterio_55": "Más del 50% de las personas demuestran conocimiento en temas de bienestar y cuentan con certificación escrita. O El 100% de las personas demuestran conocimiento en bienestar animal pero no poseen certificación.",
+    "criterio_20": "Más del 50% de las personas demuestran conocimiento en temas de bienestar y no cuentan con certificación escrita.",
+    "criterio_0": "Menos del 50% de las personas demuestran conocimiento en bienestar y no cuentan con certificaci?n."
+  },
+  {
+    "indicador_id": 37,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.5.1",
+    "criterio_100": "Al 80% o más de los animales se les permite agrupamiento social.",
+    "criterio_55": "Entre el 51 y 80 % de los animales se les permite agrupamiento social.",
+    "criterio_20": "Entre el 20 y 50 % de los animales se les permite agrupamiento social.",
+    "criterio_0": "A menos del 20% de los animales se les permite agrupamiento social."
+  },
+  {
+    "indicador_id": 38,
+    "tipo_predio": "FAMILIAR",
+    "seccion": "9.5.2",
+    "criterio_100": "Todos los animales que se encuentran amarrados con justa causa y se garantizan todas las condiciones: Espacio, lugar seguro, elementos apropiados, Acceso a sombra, alimento y agua y fijación correcta.",
+    "criterio_55": "Todos los animales que se encuentran amarrados con justa causa pero no se les garantiza alguna de las condiciones: Espacio, lugar seguro, elementos apropiados, Acceso a sombra, alimento y agua y fijación correcta.",
+    "criterio_20": "La norma no define un nivel de 20 puntos para este indicador; si no cumple las condiciones de 55 puntos, corresponde 0.",
+    "criterio_0": "Se encuentran animales amarrados sin justa causa."
+  }
+]

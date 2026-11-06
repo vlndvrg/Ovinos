@@ -5,6 +5,7 @@ export type MetodoEvaluacion = 'DOCUMENTAL' | 'VISUAL' | 'VISUAL_MUESTREO';
 export type EstadoEvaluacion = 'BORRADOR' | 'CERRADA';
 export type Puntaje = 0 | 20 | 55 | 100;
 export type Clasificacion = 'EXCELENTE BIENESTAR' | 'ALTO' | 'MEDIO' | 'BAJO';
+export type TipoPredioCriterio = 'PRODUCTIVO' | 'FAMILIAR';
 
 export interface AuthUser {
   id: number;
@@ -71,9 +72,20 @@ export interface Indicador {
   criterio_0: string | null;
 }
 
+export interface CriterioIndicador {
+  indicador_id: number;
+  tipo_predio: TipoPredioCriterio;
+  seccion: string;
+  criterio_100: string;
+  criterio_55: string;
+  criterio_20: string;
+  criterio_0: string;
+}
+
 export interface IndicadorConLibertad extends Indicador {
   libertad_nombre: string;
   libertad_peso: number;
+  criterios: CriterioIndicador[];
 }
 
 export interface Evaluacion {
@@ -115,12 +127,35 @@ export interface ItemEvaluacion {
   libertad_id: number;
   libertad_nombre: string;
   libertad_peso: number;
+  seccion: string | null;
   criterio_100: string | null;
   criterio_55: string | null;
   criterio_20: string | null;
   criterio_0: string | null;
   puntaje: Puntaje | null;
   observacion: string | null;
+}
+
+export interface PlanMejoraItem {
+  indicador_id: number;
+  numero: number;
+  nombre: string;
+  libertad_id: number;
+  libertad_nombre: string;
+  libertad_peso: number;
+  seccion: string | null;
+  puntaje: Puntaje;
+  criterio_actual: string | null;
+  criterio_100: string | null;
+  observacion: string | null;
+}
+
+export interface RecomendacionIA {
+  evaluacion_id: number;
+  contenido: string;
+  modelo: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface ResumenLibertad {
@@ -146,4 +181,6 @@ export interface EvaluacionDetalle extends Evaluacion {
   evaluador: { id: number; nombre: string; correo: string };
   items: ItemEvaluacion[];
   resumen: ResumenEvaluacion;
+  plan_mejora: PlanMejoraItem[];
+  recomendacion_ia?: { contenido: string; modelo: string } | null;
 }

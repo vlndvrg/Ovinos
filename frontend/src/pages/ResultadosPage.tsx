@@ -2,11 +2,14 @@ import {
   ArrowLeft,
   ArrowRight,
   CheckCircle2,
+  Clipboard,
   Download,
   FileText,
   Leaf,
+  Loader2,
   MapPin,
   Printer,
+  Sparkles,
   TrendingUp,
   TriangleAlert,
 } from 'lucide-react';
@@ -22,7 +25,7 @@ import {
   Tooltip,
 } from 'recharts';
 import { api, descargarPdf, mensajeDeError } from '../api/client';
-import type { EvaluacionDetalle, ItemEvaluacion } from '../api/types';
+import type { EvaluacionDetalle, ItemEvaluacion, RecomendacionIA } from '../api/types';
 import {
   Badge,
   Button,
@@ -31,6 +34,7 @@ import {
   ErrorState,
   LoadingBlock,
   MetodoBadge,
+  Modal,
   PageHeader,
   ProgressBar,
   ScorePill,
@@ -104,6 +108,21 @@ function IndicadorResultado({ item }: { item: ItemEvaluacion }) {
   );
 }
 
+function criterioDelPuntaje(item: ItemEvaluacion): string | null {
+  switch (item.puntaje) {
+    case 100:
+      return item.criterio_100;
+    case 55:
+      return item.criterio_55;
+    case 20:
+      return item.criterio_20;
+    case 0:
+      return item.criterio_0;
+    default:
+      return null;
+  }
+}
+
 export function ResultadosPage() {
   const { id } = useParams();
   const { usuario } = useAuth();
@@ -112,6 +131,10 @@ export function ResultadosPage() {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [descargando, setDescargando] = useState(false);
+  const [recomendacionIA, setRecomendacionIA] = useState<RecomendacionIA | null>(null);
+  const [cargandoIA, setCargandoIA] = useState(false);
+  const [abiertoIA, setAbiertoIA] = useState(false);
+  const [errorIA, setErrorIA] = useState<string | null>(null);
 
   const cargar = useCallback(async () => {
     setCargando(true);
@@ -124,6 +147,12 @@ export function ResultadosPage() {
       setCargando(false);
     }
   }, [id]);
+
+  useEffect(() => {
+    if (data?.estado === 'CERRADA') {
+      void cargarRecomendacionIA();
+    }
+  }, [data]);
 
   useEffect(() => {
     void cargar();
@@ -139,14 +168,6 @@ export function ResultadosPage() {
       })) ?? [],
     [data],
   );
-
-  const puntosMejora = useMemo(() => {
-    if (!data) return [];
-    return data.items
-      .filter((item) => item.puntaje !== null && item.puntaje < 100)
-      .sort((a, b) => (a.puntaje ?? 0) - (b.puntaje ?? 0) || a.numero - b.numero)
-      .slice(0, 6);
-  }, [data]);
 
   const mejoresIndicadores = useMemo(() => {
     if (!data) return [];
@@ -166,6 +187,46 @@ export function ResultadosPage() {
     } finally {
       setDescargando(false);
     }
+  };
+
+  const cargarRecomendacionIA = async () => {
+    setErrorIA(null);
+    setCargandoIA(true);
+    try {
+      const respuesta = await api.get<{ recomendacion: RecomendacionIA | null; modelo: string }>(
+        `/evaluaciones/${id}/recomendaciones-ia`,
+      );
+      setRecomendacionIA(respuesta.recomendacion ?? null);
+      setAbiertoIA(Boolean(respuesta.recomendacion));
+    } catch (err) {
+      setErrorIA(mensajeDeError(err));
+    } finally {
+      setCargandoIA(false);
+    }
+  };
+
+  const generarRecomendacionIA = async () => {
+    setErrorIA(null);
+    setCargandoIA(true);
+    try {
+      const respuesta = await api.post<{ recomendacion: RecomendacionIA; modelo: string; regenerado: boolean }>(
+        `/evaluaciones/${id}/recomendaciones-ia?regenerar=true`,
+      );
+      setRecomendacionIA(respuesta.recomendacion);
+      setAbiertoIA(true);
+      toast('Recomendaciones generadas con IA.');
+    } catch (err) {
+      setErrorIA(mensajeDeError(err));
+    } finally {
+      setCargandoIA(false);
+    }
+  };
+
+  const copiarRecomendacion = () => {
+    if (!recomendacionIA?.contenido) return;
+    navigator.clipboard.writeText(recomendacionIA.contenido).then(() => {
+      toast('Recomendación copiada al portapapeles.');
+    });
   };
 
   if (cargando) return <LoadingBlock label="Cargando resultados..." />;
@@ -239,6 +300,15 @@ export function ResultadosPage() {
             </Link>
             <Button icon={Download} loading={descargando} onClick={() => void descargar()}>
               Descargar PDF
+            </Button>
+            <Button
+              variant="outline"
+              icon={Sparkles}
+              loading={cargandoIA}
+              disabled={cargandoIA}
+              onClick={() => void generarRecomendacionIA()}
+            >
+              Recomendaciones IA
             </Button>
           </>
         }
@@ -384,60 +454,99 @@ export function ResultadosPage() {
         </Card>
       </div>
 
-      <div className="mt-5 grid gap-5 lg:grid-cols-2">
-        <Card className="p-5">
-          <SectionTitle
-            title="Mejores indicadores"
-            description="Indicadores con mayor puntaje en esta evaluación."
-          />
-          {mejoresIndicadores.length === 0 ? (
-            <div className="flex items-start gap-3 rounded-2xl bg-brand-50 p-4 text-sm text-brand-900/60">
-              <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-brand-600" />
-              <p className="font-semibold">No hay indicadores calificados en esta evaluación.</p>
-            </div>
-          ) : (
-            <div className="grid gap-2.5 sm:grid-cols-2">
-              {mejoresIndicadores.map((item) => (
-                <IndicadorResultado key={item.indicador_id} item={item} />
-              ))}
-            </div>
-          )}
-          <div className="mt-4 flex items-start gap-2.5 rounded-2xl bg-emerald-50 p-3 text-[11px] leading-relaxed text-emerald-800">
-            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
-            Fortalezas identificadas. Mantenga las prácticas asociadas a estos indicadores para
-            conservar el nivel de bienestar alcanzado.
+      <Card className="mt-5 p-5">
+        <SectionTitle
+          title="Mejores indicadores"
+          description="Indicadores con mayor puntaje en esta evaluación."
+        />
+        {mejoresIndicadores.length === 0 ? (
+          <div className="flex items-start gap-3 rounded-2xl bg-brand-50 p-4 text-sm text-brand-900/60">
+            <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-brand-600" />
+            <p className="font-semibold">No hay indicadores calificados en esta evaluación.</p>
           </div>
-        </Card>
+        ) : (
+          <div className="grid gap-2.5 sm:grid-cols-2">
+            {mejoresIndicadores.map((item) => (
+              <IndicadorResultado key={item.indicador_id} item={item} />
+            ))}
+          </div>
+        )}
+        <div className="mt-4 flex items-start gap-2.5 rounded-2xl bg-emerald-50 p-3 text-[11px] leading-relaxed text-emerald-800">
+          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+          Fortalezas identificadas. Mantenga las prácticas asociadas a estos indicadores para
+          conservar el nivel de bienestar alcanzado.
+        </div>
+      </Card>
 
-        <Card className="p-5">
-          <SectionTitle
-            title="Puntos de mejora"
-            description="Indicadores con menor puntaje, ordenados de mayor a menor criticidad."
-          />
-          {puntosMejora.length === 0 ? (
-            <div className="flex items-start gap-3 rounded-2xl bg-emerald-50 p-4 text-sm text-emerald-900">
-              <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />
-              <div>
-                <p className="font-bold">Todos los indicadores alcanzaron el puntaje óptimo.</p>
-                <p className="mt-0.5 text-xs leading-relaxed text-emerald-800/75">
-                  No se identifican oportunidades de mejora en esta evaluación.
-                </p>
-              </div>
+      <Card className="mt-5 p-5">
+        <SectionTitle
+          title="Plan de mejora"
+          description="Indicadores con 55 puntos o menos, ordenados de menor a mayor puntaje. A igual puntaje se prioriza la libertad con mayor peso."
+        />
+        {data.plan_mejora.length === 0 ? (
+          <div className="flex items-start gap-3 rounded-2xl bg-emerald-50 p-4 text-sm text-emerald-900">
+            <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />
+            <div>
+              <p className="font-bold">¡Excelente! No hay indicadores en 55 puntos o menos.</p>
+              <p className="mt-0.5 text-xs leading-relaxed text-emerald-800/75">
+                Mantenga las prácticas actuales y siga registrando la evaluación periódicamente.
+              </p>
             </div>
-          ) : (
-            <div className="grid gap-2.5 sm:grid-cols-2">
-              {puntosMejora.map((item) => (
-                <IndicadorResultado key={item.indicador_id} item={item} />
-              ))}
-            </div>
-          )}
-          <div className="mt-4 flex items-start gap-2.5 rounded-2xl bg-earth-50 p-3 text-[11px] leading-relaxed text-earth-800">
-            <TrendingUp className="mt-0.5 h-4 w-4 shrink-0" />
-            Priorice los indicadores con puntaje 0 o 20: son los de mayor impacto en el bienestar y
-            en la clasificación final.
           </div>
-        </Card>
-      </div>
+        ) : (
+          <div className="space-y-3">
+            {data.plan_mejora.map((item) => (
+              <div
+                key={item.indicador_id}
+                className="rounded-2xl border border-brand-900/[0.08] bg-white p-4"
+              >
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="text-sm font-bold text-ink">
+                      <span className="mr-1.5 text-brand-900/35">#{item.numero}</span>
+                      {item.nombre}
+                    </p>
+                    <p className="mt-0.5 text-[11px] text-brand-900/45">
+                      {item.libertad_nombre} · Peso {porcentajePeso(item.libertad_peso)}
+                      {item.seccion ? ` · Norma EBA, sección ${item.seccion}` : ''}
+                    </p>
+                  </div>
+                  <ScorePill puntaje={item.puntaje} />
+                </div>
+                <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-xl border border-amber-200/70 bg-amber-50/60 p-3">
+                    <p className="text-[10px] font-extrabold uppercase tracking-[0.1em] text-amber-800/70">
+                      Por qué quedó así
+                    </p>
+                    <p className="mt-1 text-[11px] leading-relaxed text-brand-900/65">
+                      {item.criterio_actual || 'No especificado en la norma para este nivel.'}
+                    </p>
+                    {item.observacion && (
+                      <p className="mt-2 border-t border-amber-200/70 pt-2 text-[11px] leading-relaxed text-brand-900/65">
+                        <span className="font-bold">Observación del evaluador:</span>{' '}
+                        {item.observacion}
+                      </p>
+                    )}
+                  </div>
+                  <div className="rounded-xl border border-emerald-200/70 bg-emerald-50/60 p-3">
+                    <p className="text-[10px] font-extrabold uppercase tracking-[0.1em] text-emerald-800/70">
+                      Cómo llegar a 100
+                    </p>
+                    <p className="mt-1 text-[11px] leading-relaxed text-brand-900/65">
+                      {item.criterio_100 || 'No especificado en la norma para este indicador.'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+        <div className="mt-4 flex items-start gap-2.5 rounded-2xl bg-earth-50 p-3 text-[11px] leading-relaxed text-earth-800">
+          <TrendingUp className="mt-0.5 h-4 w-4 shrink-0" />
+          Empiece por los puntajes 0 y 20: son los de mayor impacto en el bienestar y en la
+          clasificación final.
+        </div>
+      </Card>
 
       <Card className="mt-5 p-5">
         <SectionTitle title="Resumen del predio" description="Datos de la evaluación cerrada." />
@@ -548,7 +657,16 @@ export function ResultadosPage() {
                         <td className="px-3 py-2.5 text-xs font-bold tabular-nums text-brand-900/40">
                           {item.numero}
                         </td>
-                        <td className="px-3 py-2.5 text-xs font-semibold text-ink">{item.nombre}</td>
+                        <td className="px-3 py-2.5 text-xs font-semibold text-ink">
+                          {item.nombre}
+                          {item.puntaje !== null && (
+                            <p className="mt-1 max-w-[360px] text-[10px] font-normal leading-relaxed text-brand-900/45">
+                              <span className="font-bold text-brand-900/60">Criterio aplicado:</span>{' '}
+                              {criterioDelPuntaje(item) || 'No especificado en la norma para este nivel.'}
+                              {item.seccion ? ` (Norma EBA, sección ${item.seccion})` : ''}
+                            </p>
+                          )}
+                        </td>
                         <td className="px-3 py-2.5">
                           <MetodoBadge metodo={item.metodo_evaluacion} />
                         </td>
@@ -575,6 +693,52 @@ export function ResultadosPage() {
         </span>
         <span>Evaluación #{data.id} · {formatFechaHora(data.cerrada_en)}</span>
       </div>
+
+      <Modal
+        open={abiertoIA}
+        onClose={() => setAbiertoIA(false)}
+        title={recomendacionIA ? 'Recomendaciones con IA' : 'Recomendaciones IA'}
+        description={
+          errorIA
+            ? errorIA
+            : 'Orientación generada con IA a partir de la evaluación. No reemplaza el concepto del ICA ni de un veterinario.'
+        }
+        size="lg"
+      >
+        {cargandoIA ? (
+          <div className="flex flex-col items-center justify-center gap-3 py-8 text-center">
+            <Loader2 className="h-6 w-6 animate-spin text-brand-600" />
+            <p className="text-sm text-brand-900/55">Generando recomendaciones...</p>
+          </div>
+        ) : errorIA ? (
+          <div className="rounded-2xl border border-red-100 bg-red-50 p-4 text-red-800">
+            <p>{errorIA}</p>
+          </div>
+        ) : recomendacionIA ? (
+          <div className="space-y-4">
+            <div className="rounded-xl border border-brand-900/[0.07] bg-brand-50 p-4 text-[11px] leading-relaxed text-brand-900/60 whitespace-pre-wrap">
+              {recomendacionIA.contenido}
+            </div>
+            <div className="flex items-center justify-between gap-3 border-t border-brand-900/[0.07] pt-3">
+              <span className="text-[10px] font-bold text-brand-900/45">
+                Modelo: {recomendacionIA.modelo}
+              </span>
+              <div className="flex gap-2">
+                <Button variant="outline" icon={Clipboard} size="sm" onClick={copiarRecomendacion}>
+                  Copiar
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => void generarRecomendacionIA()}
+                >
+                  Regenerar
+                </Button>
+              </div>
+            </div>
+          </div>
+        ) : null}
+      </Modal>
     </div>
   );
 }

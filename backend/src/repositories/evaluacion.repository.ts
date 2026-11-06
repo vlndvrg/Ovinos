@@ -131,6 +131,7 @@ interface ItemRow extends RowDataPacket {
   libertad_id: number;
   libertad_nombre: string;
   libertad_peso: number;
+  seccion: string | null;
   criterio_100: string | null;
   criterio_55: string | null;
   criterio_20: string | null;
@@ -143,10 +144,19 @@ const SELECT_ITEM = `
   SELECT ei.id, ei.indicador_id, ei.puntaje, ei.observacion,
          i.numero, i.nombre, i.descripcion, i.metodo_evaluacion,
          i.libertad_id, l.nombre AS libertad_nombre, l.peso AS libertad_peso,
-         i.criterio_100, i.criterio_55, i.criterio_20, i.criterio_0
+         ic.seccion,
+         COALESCE(ic.criterio_100, i.criterio_100) AS criterio_100,
+         COALESCE(ic.criterio_55, i.criterio_55) AS criterio_55,
+         COALESCE(ic.criterio_20, i.criterio_20) AS criterio_20,
+         COALESCE(ic.criterio_0, i.criterio_0) AS criterio_0
   FROM evaluacion_indicadores ei
+  JOIN evaluaciones ev ON ev.id = ei.evaluacion_id
+  JOIN predios p ON p.id = ev.predio_id
   JOIN indicadores i ON i.id = ei.indicador_id
   JOIN libertades l ON l.id = i.libertad_id
+  LEFT JOIN indicador_criterios ic
+    ON ic.indicador_id = i.id
+   AND ic.tipo_predio = IF(p.sistema_productivo = 'FAMILIAR', 'FAMILIAR', 'PRODUCTIVO')
 `;
 
 function mapItem(row: ItemRow): ItemEvaluacion {
@@ -160,6 +170,7 @@ function mapItem(row: ItemRow): ItemEvaluacion {
     libertad_id: row.libertad_id,
     libertad_nombre: row.libertad_nombre,
     libertad_peso: Number(row.libertad_peso),
+    seccion: row.seccion,
     criterio_100: row.criterio_100,
     criterio_55: row.criterio_55,
     criterio_20: row.criterio_20,

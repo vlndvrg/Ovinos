@@ -77,6 +77,24 @@ CREATE TABLE IF NOT EXISTS indicadores (
     REFERENCES libertades (id) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS indicador_criterios (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  indicador_id INT UNSIGNED NOT NULL,
+  tipo_predio ENUM('PRODUCTIVO', 'FAMILIAR') NOT NULL,
+  seccion VARCHAR(20) NOT NULL,
+  criterio_100 TEXT NOT NULL,
+  criterio_55 TEXT NOT NULL,
+  criterio_20 TEXT NOT NULL,
+  criterio_0 TEXT NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_indicador_criterio_tipo (indicador_id, tipo_predio),
+  KEY idx_indicador_criterios_tipo (tipo_predio),
+  CONSTRAINT fk_indicador_criterios_indicador FOREIGN KEY (indicador_id)
+    REFERENCES indicadores (id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS evaluaciones (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   predio_id INT UNSIGNED NOT NULL,
@@ -98,6 +116,19 @@ CREATE TABLE IF NOT EXISTS evaluaciones (
   CONSTRAINT fk_evaluaciones_evaluador FOREIGN KEY (evaluador_id)
     REFERENCES usuarios (id) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT chk_evaluaciones_total CHECK (puntaje_total IS NULL OR (puntaje_total >= 0 AND puntaje_total <= 100))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS recomendaciones_ia (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  evaluacion_id INT UNSIGNED NOT NULL,
+  contenido MEDIUMTEXT NOT NULL,
+  modelo VARCHAR(120) NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_recomendaciones_evaluacion (evaluacion_id),
+  CONSTRAINT fk_recomendaciones_evaluacion FOREIGN KEY (evaluacion_id)
+    REFERENCES evaluaciones (id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS evaluacion_indicadores (

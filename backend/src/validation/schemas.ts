@@ -83,6 +83,15 @@ export const puntajeSchema = z.object({
   observacion: textoOpcional(1000),
 });
 
+export const criterioIndicadorSchema = z.object({
+  tipo_predio: z.enum(['PRODUCTIVO', 'FAMILIAR']),
+  seccion: z.string().trim().min(1, 'La sección de la norma es obligatoria').max(20),
+  criterio_100: z.string().trim().min(1, 'El criterio 100 es obligatorio').max(3000),
+  criterio_55: z.string().trim().min(1, 'El criterio 55 es obligatorio').max(3000),
+  criterio_20: z.string().trim().min(1, 'El criterio 20 es obligatorio').max(3000),
+  criterio_0: z.string().trim().min(1, 'El criterio 0 es obligatorio').max(3000),
+});
+
 export const indicadorUpdateSchema = z.object({
   descripcion: textoOpcional(3000),
   metodo_evaluacion: z.enum(['DOCUMENTAL', 'VISUAL', 'VISUAL_MUESTREO']).optional(),
@@ -90,6 +99,7 @@ export const indicadorUpdateSchema = z.object({
   criterio_55: textoOpcional(3000),
   criterio_20: textoOpcional(3000),
   criterio_0: textoOpcional(3000),
+  criterios: z.array(criterioIndicadorSchema).max(2).optional(),
 });
 
 export const prediosQuerySchema = z.object({

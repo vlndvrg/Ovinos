@@ -1,6 +1,7 @@
 import {
   AlertCircle,
   ArrowLeft,
+  ArrowRight,
   CheckCircle2,
   FileText,
   Info,
@@ -108,6 +109,8 @@ export function EvaluacionPage() {
   const observacionesRef = useRef<Record<number, string>>({});
   const timersObservacion = useRef<Record<number, number>>({});
   const timerCabecera = useRef<number | null>(null);
+  const seccionRef = useRef<HTMLDivElement>(null);
+  const resumenRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     itemsRef.current = items;
@@ -168,6 +171,23 @@ export function EvaluacionPage() {
     () => resumen?.libertades.find((libertad) => libertad.libertad_id === libertadActiva) ?? null,
     [resumen, libertadActiva],
   );
+
+  const indiceLibertad = resumen?.libertades.findIndex(
+    (libertad) => libertad.libertad_id === libertadActiva,
+  ) ?? -1;
+
+  const irALibertad = (indice: number) => {
+    const libertad = resumen?.libertades[indice];
+    if (!libertad) return;
+    setLibertadActiva(libertad.libertad_id);
+    window.setTimeout(() => {
+      seccionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 80);
+  };
+
+  const irAResumen = () => {
+    resumenRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   const actualizarItem = (indicadorId: number, cambios: Partial<ItemEvaluacion>) => {
     setItems((actuales) =>
@@ -406,6 +426,7 @@ export function EvaluacionPage() {
           </div>
 
           {libertadSeleccionada && (
+            <div ref={seccionRef} className="scroll-mt-6">
             <Card className="mt-4 p-5">
               <SectionTitle
                 title={libertadSeleccionada.libertad_nombre}
@@ -439,6 +460,11 @@ export function EvaluacionPage() {
                           <h3 className="text-sm font-bold leading-snug text-ink">{item.nombre}</h3>
                           <div className="mt-1 flex flex-wrap items-center gap-1.5">
                             <MetodoBadge metodo={item.metodo_evaluacion} />
+                            {item.seccion && (
+                              <span className="inline-flex items-center rounded-full bg-brand-50 px-2 py-0.5 text-[10px] font-bold text-brand-700">
+                                Norma EBA, sección {item.seccion}
+                              </span>
+                            )}
                             <ScorePill puntaje={item.puntaje} />
                             {guardando[item.indicador_id] && (
                               <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-brand-600">
@@ -477,7 +503,7 @@ export function EvaluacionPage() {
                                 texto?.trim() ? 'text-brand-900/65' : 'italic text-brand-900/35',
                               )}
                             >
-                              {texto?.trim() || 'Criterio no definido por el administrador.'}
+                              {texto?.trim() || 'No especificado en la norma para este indicador.'}
                             </p>
                           </div>
                         );
@@ -526,11 +552,39 @@ export function EvaluacionPage() {
                   </div>
                 ))}
               </div>
+
+              <div className="mt-5 flex flex-col gap-3 border-t border-brand-900/[0.07] pt-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-col gap-2 sm:flex-row">
+                  <Button
+                    variant="outline"
+                    icon={ArrowLeft}
+                    disabled={indiceLibertad <= 0}
+                    onClick={() => irALibertad(indiceLibertad - 1)}
+                  >
+                    Anterior
+                  </Button>
+                  {indiceLibertad < resumen.libertades.length - 1 ? (
+                    <Button icon={ArrowRight} onClick={() => irALibertad(indiceLibertad + 1)}>
+                      Siguiente: {resumen.libertades[indiceLibertad + 1]?.libertad_nombre}
+                    </Button>
+                  ) : (
+                    <Button icon={ArrowRight} onClick={irAResumen}>
+                      Siguiente: resumen y cierre
+                    </Button>
+                  )}
+                </div>
+                <p className="text-[11px] leading-relaxed text-brand-900/45">
+                  {faltantes === 0
+                    ? 'Todos los indicadores están calificados.'
+                    : `Faltan ${faltantes} indicador(es) por calificar en la evaluación.`}
+                </p>
+              </div>
             </Card>
+            </div>
           )}
         </div>
 
-        <div className="space-y-5">
+        <div ref={resumenRef} className="scroll-mt-6 space-y-5">
           <Card className="p-5 lg:sticky lg:top-6">
             <SectionTitle
               title={resumen.completo ? 'Resultado de la evaluación' : 'Puntaje parcial'}

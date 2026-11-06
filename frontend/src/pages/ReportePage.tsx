@@ -16,6 +16,21 @@ import {
   porcentajePeso,
 } from '../lib/format';
 
+function criterioDelPuntaje(item: EvaluacionDetalle['items'][number]): string | null {
+  switch (item.puntaje) {
+    case 100:
+      return item.criterio_100;
+    case 55:
+      return item.criterio_55;
+    case 20:
+      return item.criterio_20;
+    case 0:
+      return item.criterio_0;
+    default:
+      return null;
+  }
+}
+
 export function ReportePage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -295,7 +310,15 @@ export function ReportePage() {
                   <td className="px-1.5 py-1.5 font-bold tabular-nums text-brand-900/45">
                     {item.numero}
                   </td>
-                  <td className="px-1.5 py-1.5 font-semibold text-ink">{item.nombre}</td>
+                  <td className="px-1.5 py-1.5 font-semibold text-ink">
+                    {item.nombre}
+                    {item.puntaje !== null && (
+                      <p className="mt-0.5 text-[8px] font-normal leading-relaxed text-brand-900/45">
+                        Criterio aplicado: {criterioDelPuntaje(item) || 'No especificado en la norma.'}
+                        {item.seccion ? ` (Norma EBA, sección ${item.seccion})` : ''}
+                      </p>
+                    )}
+                  </td>
                   <td className="px-1.5 py-1.5 text-brand-900/60">{item.libertad_nombre}</td>
                   <td className="px-1.5 py-1.5 text-brand-900/60">
                     {ETIQUETA_METODO[item.metodo_evaluacion]}
@@ -310,6 +333,64 @@ export function ReportePage() {
               ))}
             </tbody>
           </table>
+        </section>
+
+        <section className="mt-6">
+          <h2 className="border-b border-brand-900/15 pb-1 font-display text-base font-semibold text-ink">
+            Plan de mejora
+          </h2>
+          {data.plan_mejora.length === 0 ? (
+            <p className="mt-2 rounded-xl bg-emerald-50 px-3 py-2 text-[11px] leading-relaxed text-emerald-900">
+              ¡Excelente! No hay indicadores con 55 puntos o menos. Mantenga las prácticas actuales.
+            </p>
+          ) : (
+            <div className="mt-2 space-y-2">
+              {data.plan_mejora.map((item) => (
+                <div
+                  key={item.indicador_id}
+                  className="break-inside-avoid rounded-xl border border-brand-900/10 p-2.5"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-[10px] font-bold text-ink">
+                        #{item.numero} · {item.nombre}
+                      </p>
+                      <p className="text-[8px] text-brand-900/50">
+                        {item.libertad_nombre} · Puntaje {item.puntaje}
+                        {item.seccion ? ` · Norma EBA, sección ${item.seccion}` : ''}
+                      </p>
+                    </div>
+                    <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[8px] font-extrabold text-amber-800">
+                      {item.puntaje} pts
+                    </span>
+                  </div>
+                  <div className="mt-1.5 grid gap-2 sm:grid-cols-2">
+                    <div className="rounded-lg bg-amber-50/70 p-2">
+                      <p className="text-[8px] font-bold uppercase tracking-[0.08em] text-amber-800/70">
+                        Por qué quedó así
+                      </p>
+                      <p className="mt-0.5 text-[9px] leading-relaxed text-brand-900/65">
+                        {item.criterio_actual || 'No especificado en la norma para este nivel.'}
+                      </p>
+                      {item.observacion && (
+                        <p className="mt-1 text-[9px] leading-relaxed text-brand-900/65">
+                          <span className="font-bold">Observación:</span> {item.observacion}
+                        </p>
+                      )}
+                    </div>
+                    <div className="rounded-lg bg-emerald-50/70 p-2">
+                      <p className="text-[8px] font-bold uppercase tracking-[0.08em] text-emerald-800/70">
+                        Cómo llegar a 100
+                      </p>
+                      <p className="mt-0.5 text-[9px] leading-relaxed text-brand-900/65">
+                        {item.criterio_100 || 'No especificado en la norma para este indicador.'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </section>
 
         {data.observaciones && (

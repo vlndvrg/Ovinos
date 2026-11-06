@@ -18,6 +18,10 @@ export async function actualizarIndicador(id: number, input: ActualizarIndicador
   const indicador = await indicadorRepository.findById(id);
   if (!indicador) throw notFound('Indicador no encontrado.');
 
-  await indicadorRepository.update(id, input);
+  const { criterios, ...camposIndicador } = input;
+  await indicadorRepository.update(id, camposIndicador);
+  if (criterios && criterios.length > 0) {
+    await indicadorRepository.upsertCriterios(id, criterios);
+  }
   return indicadorRepository.findById(id);
 }

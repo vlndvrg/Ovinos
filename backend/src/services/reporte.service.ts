@@ -257,6 +257,28 @@ export function generarReportePdf(data: EvaluacionDetalle): PDFKit.PDFDocument {
     doc.moveDown(1);
   }
 
+  // Recomendaciones generadas con IA
+  if (data.recomendacion_ia?.contenido) {
+    ensureSpace(doc, 70);
+    doc.font('Helvetica-Bold').fontSize(12).fillColor(COLORS.primary).text('Recomendaciones generadas con IA');
+    doc.moveDown(0.3);
+    doc
+      .font('Helvetica')
+      .fontSize(8.5)
+      .fillColor(COLORS.text)
+      .text(data.recomendacion_ia.contenido, { width: ancho, align: 'justify' });
+    doc.moveDown(0.3);
+    doc
+      .font('Helvetica-Oblique')
+      .fontSize(7.5)
+      .fillColor(COLORS.muted)
+      .text(`Modelo utilizado: ${data.recomendacion_ia.modelo}. Orientación generada con IA a partir de la evaluación; no reemplaza el concepto del ICA ni de un veterinario.`, {
+        width: ancho,
+        align: 'justify',
+      });
+    doc.moveDown(1);
+  }
+
   // Firmas
   ensureSpace(doc, 90);
   doc.moveDown(1);

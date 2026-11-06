@@ -215,6 +215,60 @@ describe('EvaluacionService - cierre de evaluación', () => {
       status: 403,
     });
   });
+
+  it('impide que el responsable acceda a la evaluación cerrada de otro predio', async () => {
+    const evaluacionCerradaOtroPredio: Evaluacion = {
+      ...evaluacion,
+      id: 2,
+      predio_id: 99,
+      estado: 'CERRADA',
+    };
+    const predioDeOtroResponsable: PredioConResumen = {
+      ...predio,
+      id: 99,
+      responsable_id: 99,
+    };
+    vi.mocked(evaluacionRepository.findById).mockResolvedValue(evaluacionCerradaOtroPredio);
+    vi.mocked(predioRepository.findById).mockResolvedValue(predioDeOtroResponsable);
+    vi.mocked(libertadRepository.findAll).mockResolvedValue(libertades);
+    vi.mocked(usuarioRepository.findById).mockResolvedValue({
+      id: 2,
+      nombre: evaluador.nombre,
+      correo: evaluador.correo,
+      rol: 'EVALUADOR',
+      activo: true,
+      created_at: '',
+      updated_at: '',
+    });
+
+    await expect(evaluacionService.detalle(responsable, 2)).rejects.toMatchObject({
+      status: 403,
+    });
+  });
+
+  it('permite que el responsable acceda a su propia evaluación cerrada', async () => {
+    const evaluacionCerradaPropia: Evaluacion = {
+      ...evaluacion,
+      id: 2,
+      estado: 'CERRADA',
+      puntaje_total: 72.25,
+      clasificacion: 'MEDIO',
+    };
+    vi.mocked(evaluacionRepository.findById).mockResolvedValue(evaluacionCerradaPropia);
+    vi.mocked(predioRepository.findById).mockResolvedValue(predio);
+    vi.mocked(libertadRepository.findAll).mockResolvedValue(libertades);
+    vi.mocked(usuarioRepository.findById).mockResolvedValue({
+      id: 2,
+      nombre: evaluador.nombre,
+      correo: evaluador.correo,
+      rol: 'EVALUADOR',
+      activo: true,
+      created_at: '',
+      updated_at: '',
+    });
+
+    await expect(evaluacionService.detalle(responsable, 2)).resolves.toBeDefined();
+  });
 });
 
 describe('EvaluacionService - calificación por indicador', () => {
