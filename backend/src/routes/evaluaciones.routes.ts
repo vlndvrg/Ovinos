@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as evaluacionController from '../controllers/evaluacion.controller';
+import * as recomendacionesIaController from '../controllers/recomendaciones_ia.controller';
 import { authenticate, requireRole } from '../middleware/auth';
 
 export const evaluacionesRouter = Router();
@@ -39,4 +40,18 @@ evaluacionesRouter.delete(
   '/:id',
   requireRole('ADMIN', 'EVALUADOR'),
   evaluacionController.eliminar,
+);
+
+evaluacionesRouter.get(
+  '/:id/recomendaciones-ia',
+  recomendacionesIaController.obtenerOGenerar,
+);
+evaluacionesRouter.post(
+  '/:id/recomendaciones-ia',
+  recomendacionesIaController.obtenerOGenerar,
+);
+evaluacionesRouter.delete(
+  '/:id/recomendaciones-ia',
+  requireRole('ADMIN', 'EVALUADOR'),
+  recomendacionesIaController.eliminar,
 );
