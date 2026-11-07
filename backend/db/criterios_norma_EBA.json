@@ -1,0 +1,768 @@
+{
+  "fuente": "ICA - Metodología EBA Ovinos y Caprinos (2024). Capítulo I (predios productivos extensivos, semi intensivos e intensivos) y Capítulo II (predios productivos familiares). Textos condensados de la sección de calificación de cada indicador, sin cambiar umbrales ni porcentajes.",
+  "notas_generales": [
+    "Los criterios de los predios familiares coinciden con los de los predios productivos salvo el indicador 5 (ver 'criterios_familiares_si_difieren') y diferencias mínimas de borde en los indicadores 9 y 11, donde el capítulo II usa 11% en vez de 10% en el límite del nivel 55. Se usaron los textos del capítulo I.",
+    "Algunos indicadores solo tienen 2 o 3 niveles en la norma (ver 'niveles_definidos'). La interfaz solo debe ofrecer los niveles definidos.",
+    "Algunos rangos de la norma tienen pequeños vacíos (por ejemplo entre 3% y 4%); se dejaron tal cual."
+  ],
+  "indicadores": [
+    {
+      "numero": 1,
+      "nombre": "Acceso y disponibilidad al agua de bebida",
+      "seccion_norma_productivos": "7.1.1",
+      "seccion_norma_familiares": "9.1.1",
+      "metodo_evaluacion": "VISUAL_MUESTREO",
+      "metodo_texto": "Inspección visual sujeta a muestreo de bebederos, chupos, zanjas o jagüeyes.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "El agua está disponible en bebederos, chupos, zanjas o jagüeyes y al menos el 90% de los animales tiene acceso a ella.",
+        "55": "El agua está disponible y entre el 70% y el 89% de los animales tiene acceso a ella.",
+        "20": "El agua está disponible y entre el 40% y el 69% de los animales tiene acceso a ella.",
+        "0": "Menos del 40% de los animales tiene acceso al agua, o el agua no está disponible."
+      }
+    },
+    {
+      "numero": 2,
+      "nombre": "Cantidad y calidad del agua de bebida",
+      "seccion_norma_productivos": "7.1.2",
+      "seccion_norma_familiares": "9.1.2",
+      "metodo_evaluacion": "VISUAL_MUESTREO",
+      "metodo_texto": "Inspección visual sujeta a muestreo de bebederos, chupos, zanjas o jagüeyes.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "Al menos el 90% de los animales tiene acceso a suficiente agua y esta es de buena calidad.",
+        "55": "Entre el 70% y el 89% de los animales tiene acceso a suficiente agua de buena calidad.",
+        "20": "Entre el 40% y el 69% de los animales tiene acceso a suficiente agua de buena calidad, o más del 69% tiene agua suficiente pero de mala calidad.",
+        "0": "Menos del 40% de los animales tiene acceso a suficiente agua, o entre el 40% y el 69% tiene agua suficiente pero de mala calidad."
+      }
+    },
+    {
+      "numero": 3,
+      "nombre": "Estado y limpieza de bebederos",
+      "seccion_norma_productivos": "7.1.3",
+      "seccion_norma_familiares": "9.1.3",
+      "metodo_evaluacion": "VISUAL_MUESTREO",
+      "metodo_texto": "Inspección visual sujeta a muestreo de bebederos y del tanque de almacenamiento.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "El 90% o más de los bebederos está en buen estado, limpio y libre de moho y heces en el interior.",
+        "55": "Entre el 70% y el 89% de los bebederos está en buen estado y limpio, o el predio no usa bebederos ni chupos pero garantiza el acceso al agua.",
+        "20": "Entre el 40% y el 69% de los bebederos está en buen estado, limpio y libre de moho y heces en el interior.",
+        "0": "Menos del 40% de los bebederos está en buen estado, o se evidencia suciedad, moho o heces en el interior."
+      }
+    },
+    {
+      "numero": 4,
+      "nombre": "Acceso y disponibilidad del alimento",
+      "seccion_norma_productivos": "7.1.4",
+      "seccion_norma_familiares": "9.1.4",
+      "metodo_evaluacion": "VISUAL_MUESTREO",
+      "metodo_texto": "Inspección visual sujeta a muestreo de comederos y/o praderas.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "El alimento está disponible en corrales y praderas y al menos el 90% de los animales tiene acceso a él.",
+        "55": "El alimento está disponible y entre el 70% y el 89% de los animales tiene acceso a él.",
+        "20": "El alimento está disponible y entre el 40% y el 69% de los animales tiene acceso a él.",
+        "0": "Menos del 40% de los animales tiene acceso al alimento, o el alimento no está disponible."
+      }
+    },
+    {
+      "numero": 5,
+      "nombre": "Cantidad y calidad del alimento",
+      "seccion_norma_productivos": "7.1.5",
+      "seccion_norma_familiares": "9.1.5",
+      "metodo_evaluacion": "VISUAL_MUESTREO",
+      "metodo_texto": "Inspección visual sujeta a muestreo de comederos y/o praderas.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "El 90% o más de los animales tiene suficiente alimento en comederos y praderas, el alimento de los comederos es de buena calidad y se cumplen las medidas de comederos (mínimo 30 cm lineales por animal adulto y 20 cm por cordero o cabrito).",
+        "55": "Entre el 70% y el 89% de los animales tiene suficiente alimento y este es de buena calidad, o no se cumplen las medidas de comederos.",
+        "20": "Entre el 40% y el 69% de los animales tiene suficiente alimento, de buena calidad, y se cumplen las medidas de comederos.",
+        "0": "Menos del 40% de los animales tiene suficiente alimento, o el alimento ofrecido en comederos no es de buena calidad."
+      },
+      "criterios_familiares_si_difieren": {
+        "100": "El 90% o más de los animales tiene suficiente cantidad de alimento y este es de buena calidad.",
+        "55": "Entre el 70% y el 89% de los animales tiene suficiente cantidad de alimento y este es de buena calidad.",
+        "20": "Entre el 40% y el 69% de los animales tiene suficiente cantidad de alimento y este es de buena calidad.",
+        "0": "Menos del 40% de los animales tiene suficiente cantidad de alimento de buena calidad."
+      }
+    },
+    {
+      "numero": 6,
+      "nombre": "Estado y limpieza de comederos",
+      "seccion_norma_productivos": "7.1.6",
+      "seccion_norma_familiares": "9.1.6",
+      "metodo_evaluacion": "VISUAL_MUESTREO",
+      "metodo_texto": "Inspección visual sujeta a muestreo de los comederos de los espacios donde están los animales muestreados.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "Más del 90% de los comederos está en buen estado y limpio (sin moho, lama ni heces en el interior), o todos los animales se alimentan exclusivamente en pastoreo.",
+        "55": "Entre el 70% y el 89% de los comederos está en buen estado y limpio, libre de moho, lama y heces en el interior.",
+        "20": "Entre el 40% y el 69% de los comederos está en buen estado y limpio, libre de moho, lama y heces en el interior.",
+        "0": "Menos del 40% de los comederos está en buen estado, o se evidencia moho, lama o heces en el interior."
+      }
+    },
+    {
+      "numero": 7,
+      "nombre": "Almacenamiento de los alimentos",
+      "seccion_norma_productivos": "7.1.7",
+      "seccion_norma_familiares": null,
+      "metodo_evaluacion": "VISUAL",
+      "metodo_texto": "Inspección visual del sitio de almacenamiento.",
+      "niveles_definidos": [
+        100,
+        0
+      ],
+      "criterios": {
+        "100": "Los alimentos y suplementos comerciales están almacenados correctamente (estibas, separados de las paredes, con aireación y sin evidencia de roedores o plagas) y cuentan con registro ICA.",
+        "0": "Los alimentos y suplementos no están almacenados correctamente o no cuentan con registro ICA."
+      },
+      "nota": "La norma solo define los niveles 100 y 0 para este indicador."
+    },
+    {
+      "numero": 8,
+      "nombre": "Condición corporal",
+      "seccion_norma_productivos": "7.1.8",
+      "seccion_norma_familiares": "9.1.7",
+      "metodo_evaluacion": "VISUAL_MUESTREO",
+      "metodo_texto": "Inspección visual sujeta a muestreo de animales adultos, con escala de condición corporal de 1 a 5.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "Más del 80% de los animales tiene puntuación de 3 o 4 en la escala de condición corporal de 1 a 5.",
+        "55": "Entre el 61% y el 80% de los animales tiene puntuación de 3 o 4.",
+        "20": "Entre el 41% y el 60% de los animales tiene puntuación de 3 o 4.",
+        "0": "El 40% o menos de los animales tiene puntuación de 3 o 4."
+      }
+    },
+    {
+      "numero": 9,
+      "nombre": "Signos de estrés térmico",
+      "seccion_norma_productivos": "7.2.1",
+      "seccion_norma_familiares": "9.2.1",
+      "metodo_evaluacion": "VISUAL_MUESTREO",
+      "metodo_texto": "Inspección visual sujeta a muestreo de potreros y corrales.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "Menos del 10% de los animales observados presenta signos de estrés térmico.",
+        "55": "Entre el 10% y el 20% de los animales observados presenta signos de estrés térmico.",
+        "20": "Entre el 21% y el 30% de los animales observados presenta signos de estrés térmico.",
+        "0": "Más del 30% de los animales observados presenta signos de estrés térmico."
+      }
+    },
+    {
+      "numero": 10,
+      "nombre": "Acceso a sombra en corrales y potreros",
+      "seccion_norma_productivos": "7.2.2",
+      "seccion_norma_familiares": "9.2.2",
+      "metodo_evaluacion": "VISUAL_MUESTREO",
+      "metodo_texto": "Inspección visual sujeta a muestreo de potreros y corrales.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "Más del 90% de los animales tiene acceso a sombra en corrales y potreros.",
+        "55": "Entre el 70% y el 89% de los animales tiene acceso a sombra en corrales y potreros.",
+        "20": "Entre el 40% y el 69% de los animales tiene acceso a sombra en corrales y potreros.",
+        "0": "Menos del 40% de los animales tiene acceso a sombra en corrales y potreros."
+      }
+    },
+    {
+      "numero": 11,
+      "nombre": "Encharcamiento en corrales y potreros",
+      "seccion_norma_productivos": "7.2.3",
+      "seccion_norma_familiares": "9.2.3",
+      "metodo_evaluacion": "VISUAL_MUESTREO",
+      "metodo_texto": "Inspección visual sujeta a muestreo, con recorrido de potreros y corrales.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "Hay encharcamientos en menos del 10% de los corrales o potreros y existen suficientes zonas de descanso sin encharcamiento.",
+        "55": "Hay encharcamientos entre el 10% y el 20% de los corrales o potreros y existen suficientes zonas de descanso sin encharcamiento.",
+        "20": "Hay encharcamientos entre el 21% y el 30% de los corrales o potreros y existen zonas de descanso sin encharcamiento.",
+        "0": "Hay encharcamientos en más del 30% de los corrales o potreros y no existen zonas de descanso."
+      }
+    },
+    {
+      "numero": 12,
+      "nombre": "Espacio mínimo por animal en confinamiento",
+      "seccion_norma_productivos": "7.2.4",
+      "seccion_norma_familiares": "9.2.4",
+      "metodo_evaluacion": "VISUAL_MUESTREO",
+      "metodo_texto": "Inspección visual sujeta a muestreo, con recorrido de corrales; se compara con la Tabla 3 de la norma (m² por animal según especie y categoría).",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "Más del 90% de los espacios revisados cumple o supera los mínimos de espacio por animal establecidos en la norma.",
+        "55": "Entre el 70% y el 89% de los espacios revisados cumple o supera los mínimos establecidos.",
+        "20": "Entre el 40% y el 69% de los espacios revisados cumple o supera los mínimos establecidos.",
+        "0": "Menos del 40% de los espacios revisados cumple los mínimos establecidos."
+      }
+    },
+    {
+      "numero": 13,
+      "nombre": "Tipo, estado del piso y limpieza de los corrales",
+      "seccion_norma_productivos": "7.2.5",
+      "seccion_norma_familiares": "9.2.5",
+      "metodo_evaluacion": "VISUAL_MUESTREO",
+      "metodo_texto": "Inspección visual sujeta a muestreo, con recorrido de corrales.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "En el 100% de los corrales el piso no presenta riesgo ni causa lesiones, está en buen estado y limpio, sin acumulación de residuos ni materiales extraños.",
+        "55": "En entre el 70% y el 99% de los corrales el piso cumple esas condiciones (sin riesgo, buen estado, limpio y sin residuos ni materiales extraños).",
+        "20": "En entre el 40% y el 69% de los corrales el piso cumple esas condiciones.",
+        "0": "En menos del 40% de los corrales el piso cumple esas condiciones."
+      }
+    },
+    {
+      "numero": 14,
+      "nombre": "Condición e higiene de la cama",
+      "seccion_norma_productivos": "7.2.6",
+      "seccion_norma_familiares": "9.2.6",
+      "metodo_evaluacion": "VISUAL_MUESTREO",
+      "metodo_texto": "Inspección visual sujeta a muestreo de corrales.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "El 100% de las camas revisadas es suave, tiene suficiente material, no deja ver el suelo, es de fácil limpieza y desinfección, no tiene elementos que lesionen a los animales y no huele a amoniaco.",
+        "55": "Entre el 70% y el 99% de las camas revisadas cumple esas condiciones.",
+        "20": "Entre el 40% y el 69% de las camas revisadas cumple esas condiciones.",
+        "0": "Menos del 40% de las camas revisadas cumple esas condiciones."
+      }
+    },
+    {
+      "numero": 15,
+      "nombre": "Iluminación en los corrales",
+      "seccion_norma_productivos": "7.2.7",
+      "seccion_norma_familiares": "9.2.7",
+      "metodo_evaluacion": "VISUAL_MUESTREO",
+      "metodo_texto": "Inspección visual sujeta a muestreo, con recorrido de corrales.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "El 100% de los corrales tiene iluminación que permite inspeccionar todos los animales y áreas.",
+        "55": "Entre el 70% y el 99% de los corrales tiene iluminación que permite inspeccionar todos los animales y áreas.",
+        "20": "Entre el 50% y el 69% de los corrales tiene iluminación que permite inspeccionar todos los animales y áreas.",
+        "0": "Menos del 49% de los corrales tiene iluminación que permite inspeccionar todos los animales y áreas."
+      }
+    },
+    {
+      "numero": 16,
+      "nombre": "Ventilación en los corrales",
+      "seccion_norma_productivos": "7.2.8",
+      "seccion_norma_familiares": "9.2.8",
+      "metodo_evaluacion": "VISUAL_MUESTREO",
+      "metodo_texto": "Inspección visual sujeta a muestreo, con recorrido de corrales.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "El 100% de los corrales tiene ventilación que evita la concentración de olores.",
+        "55": "Entre el 70% y el 99% de los corrales tiene ventilación que evita la concentración de olores.",
+        "20": "Entre el 50% y el 69% de los corrales tiene ventilación que evita la concentración de olores.",
+        "0": "Menos del 49% de los corrales tiene ventilación que evita la concentración de olores."
+      }
+    },
+    {
+      "numero": 17,
+      "nombre": "Sintomatología respiratoria (secreción nasal, tos)",
+      "seccion_norma_productivos": "7.3.1",
+      "seccion_norma_familiares": "9.3.1",
+      "metodo_evaluacion": "VISUAL_MUESTREO",
+      "metodo_texto": "Inspección visual sujeta a muestreo; el 50% de los animales de la muestra deben ser corderos o cabritos.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "Menos del 3% de los animales presenta secreción nasal o tos.",
+        "55": "Entre el 4% y el 7% de los animales presenta secreción nasal o tos.",
+        "20": "Entre el 8% y el 10% de los animales presenta secreción nasal o tos.",
+        "0": "Más del 10% de los animales presenta secreción nasal o tos."
+      }
+    },
+    {
+      "numero": 18,
+      "nombre": "Secreción ocular",
+      "seccion_norma_productivos": "7.3.2",
+      "seccion_norma_familiares": "9.3.2",
+      "metodo_evaluacion": "VISUAL_MUESTREO",
+      "metodo_texto": "Inspección visual sujeta a muestreo.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "Menos del 3% de los animales presenta secreción ocular.",
+        "55": "Entre el 4% y el 7% de los animales presenta secreción ocular.",
+        "20": "Entre el 8% y el 10% de los animales presenta secreción ocular.",
+        "0": "Más del 10% de los animales presenta secreción ocular."
+      }
+    },
+    {
+      "numero": 19,
+      "nombre": "FAMACHA",
+      "seccion_norma_productivos": "7.3.3",
+      "seccion_norma_familiares": "9.3.3",
+      "metodo_evaluacion": "VISUAL_MUESTREO",
+      "metodo_texto": "Inspección visual sujeta a muestreo (color de la mucosa del ojo, escala FAMACHA).",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "Menos del 3% de los animales tiene calificación FAMACHA de 4 o 5.",
+        "55": "Entre el 4% y el 6% de los animales tiene calificación FAMACHA de 4 o 5.",
+        "20": "Entre el 7% y el 10% de los animales tiene calificación FAMACHA de 4 o 5.",
+        "0": "Más del 10% de los animales tiene calificación FAMACHA de 4 o 5."
+      }
+    },
+    {
+      "numero": 20,
+      "nombre": "Topizado y descorne",
+      "seccion_norma_productivos": "7.3.4",
+      "seccion_norma_familiares": "9.3.4",
+      "metodo_evaluacion": "VISUAL_MUESTREO",
+      "metodo_texto": "Inspección visual sujeta a muestreo.",
+      "niveles_definidos": [
+        100,
+        55,
+        0
+      ],
+      "criterios": {
+        "100": "No se realiza topizado ni descorne. Si se realiza, es antes de los 10 días de edad, con evidencia de analgesia y anestesia, y todos los animales están en la misma condición.",
+        "55": "Se realiza topizado o descorne después de los 10 días de edad, pero hay evidencia de uso de anestesia y/o analgesia.",
+        "0": "Se realiza topizado o descorne después de los 10 días de edad y no hay evidencia de anestesia ni analgesia."
+      },
+      "nota": "Aplica solo a caprinos. La norma solo define los niveles 100, 55 y 0."
+    },
+    {
+      "numero": 21,
+      "nombre": "Presencia de ectoparásitos (tábanos, garrapatas, nuches y miasis)",
+      "seccion_norma_productivos": "7.3.5",
+      "seccion_norma_familiares": "9.3.5",
+      "metodo_evaluacion": "VISUAL_MUESTREO",
+      "metodo_texto": "Inspección visual sujeta a muestreo.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "En ningún animal se observan ectoparásitos.",
+        "55": "Entre el 1% y el 10% de los animales presenta ectoparásitos.",
+        "20": "Entre el 10% y el 20% de los animales presenta ectoparásitos.",
+        "0": "Más del 20% de los animales presenta ectoparásitos."
+      }
+    },
+    {
+      "numero": 22,
+      "nombre": "Lesiones, heridas en el cuerpo, pérdida de pelo o lana",
+      "seccion_norma_productivos": "7.3.6",
+      "seccion_norma_familiares": "9.3.6",
+      "metodo_evaluacion": "VISUAL_MUESTREO",
+      "metodo_texto": "Inspección visual sujeta a muestreo.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "Hasta el 3% de los animales presenta alopecias, úlceras, heridas o lesiones en el cuerpo y están siendo tratadas.",
+        "55": "Entre el 4% y el 6% de los animales presenta alopecias, úlceras, heridas o lesiones y están siendo tratadas.",
+        "20": "Entre el 7% y el 10% de los animales presenta alopecias, úlceras, heridas o lesiones y están siendo tratadas, o menos del 7% las presenta y no son tratadas.",
+        "0": "Más del 10% de los animales presenta alopecias, úlceras, heridas o lesiones y no son tratadas."
+      }
+    },
+    {
+      "numero": 23,
+      "nombre": "Mastitis clínica",
+      "seccion_norma_productivos": "7.3.7",
+      "seccion_norma_familiares": "9.3.7",
+      "metodo_evaluacion": "VISUAL_MUESTREO",
+      "metodo_texto": "Documental y por inspección visual sujeta a muestreo.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "La prevalencia de mastitis clínica en los animales evaluados es menor al 3%.",
+        "55": "La prevalencia de mastitis clínica está entre el 3% y el 4%.",
+        "20": "La prevalencia de mastitis clínica está entre el 4,1% y el 5%.",
+        "0": "La prevalencia de mastitis clínica es mayor al 5%."
+      }
+    },
+    {
+      "numero": 24,
+      "nombre": "Castración",
+      "seccion_norma_productivos": "7.3.8",
+      "seccion_norma_familiares": "9.3.8",
+      "metodo_evaluacion": "VISUAL_MUESTREO",
+      "metodo_texto": "Inspección visual sujeta a muestreo.",
+      "niveles_definidos": [
+        100,
+        55,
+        0
+      ],
+      "criterios": {
+        "100": "No se realiza castración. Si se realiza: con evidencia de anestesia y/o analgesia, sin bandas constrictoras, la cirugía la hace un MV o MVZ y antes de los 15 días de edad; si es castración química, con productos con registro ICA siguiendo el rotulado.",
+        "55": "Se realiza castración (cualquier método) con evidencia de anestesia y analgesia, la cirugía la hace un MV o MVZ y antes de los 15 días de edad.",
+        "0": "Se realiza castración sin evidencia de anestesia y/o analgesia, o la cirugía no la hace un MV o MVZ, o se hace después de los 15 días de edad."
+      },
+      "nota": "La norma solo define los niveles 100, 55 y 0."
+    },
+    {
+      "numero": 25,
+      "nombre": "Descole",
+      "seccion_norma_productivos": "7.3.9",
+      "seccion_norma_familiares": "9.3.9",
+      "metodo_evaluacion": "VISUAL_MUESTREO",
+      "metodo_texto": "Inspección visual sujeta a muestreo.",
+      "niveles_definidos": [
+        100,
+        55,
+        0
+      ],
+      "criterios": {
+        "100": "No se realiza descole, o en el 100% de los animales descolados el descole es largo, hay evidencia de anestesia y/o analgesia y el descole con anillo de caucho se hizo antes de los 15 días de edad.",
+        "55": "En el 100% de los animales descolados el descole es largo, pero no hay evidencia de anestesia y/o analgesia, o el descole con anillo de caucho se hizo después de los 15 días de edad.",
+        "0": "Se realiza descole corto."
+      },
+      "nota": "Aplica solo a ovinos. La norma solo define los niveles 100, 55 y 0."
+    },
+    {
+      "numero": 26,
+      "nombre": "Suciedad del tren posterior",
+      "seccion_norma_productivos": "7.3.10",
+      "seccion_norma_familiares": "9.3.10",
+      "metodo_evaluacion": "VISUAL_MUESTREO",
+      "metodo_texto": "Inspección visual sujeta a muestreo, con escala de suciedad fecal de 1 a 5.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "Hasta el 3% de los animales presenta puntuación de suciedad de 4 o 5.",
+        "55": "Entre el 4% y el 6% de los animales presenta puntuación de 4 o 5.",
+        "20": "Entre el 7% y el 10% de los animales presenta puntuación de 4 o 5.",
+        "0": "Más del 10% de los animales presenta puntuación de 4 o 5."
+      },
+      "nota": "Aplica solo a ovinos de lana. En el PDF de la norma el nivel 100 dice 'Más del 3%', que parece un error de transcripción; aquí se redactó como 'Hasta el 3%' por coherencia con los demás niveles. Confirmar con el profesor."
+    },
+    {
+      "numero": 27,
+      "nombre": "Cojeras",
+      "seccion_norma_productivos": "7.3.11",
+      "seccion_norma_familiares": "9.3.11",
+      "metodo_evaluacion": "VISUAL_MUESTREO",
+      "metodo_texto": "Inspección visual sujeta a muestreo.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "Hasta el 5% de los animales presenta cojeras.",
+        "55": "Hasta el 8% de los animales presenta cojeras.",
+        "20": "Entre el 9% y el 12% de los animales presenta cojeras.",
+        "0": "Más del 13% de los animales presenta cojeras."
+      }
+    },
+    {
+      "numero": 28,
+      "nombre": "Sobre crecimiento de pezuñas",
+      "seccion_norma_productivos": "7.3.12",
+      "seccion_norma_familiares": "9.3.12",
+      "metodo_evaluacion": "VISUAL_MUESTREO",
+      "metodo_texto": "Inspección visual sujeta a muestreo.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "Hasta el 5% de los animales presenta sobre crecimiento de pezuñas.",
+        "55": "Hasta el 8% de los animales presenta sobre crecimiento de pezuñas.",
+        "20": "Entre el 9% y el 12% de los animales presenta sobre crecimiento de pezuñas.",
+        "0": "Más del 13% de los animales presenta sobre crecimiento de pezuñas."
+      }
+    },
+    {
+      "numero": 29,
+      "nombre": "Mortalidad",
+      "seccion_norma_productivos": "7.3.13",
+      "seccion_norma_familiares": "9.3.13",
+      "metodo_evaluacion": "DOCUMENTAL",
+      "metodo_texto": "Documental: registros de muertes de los últimos 12 meses y entrevista con el productor (en predios familiares, entrevista).",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "Mortalidad menor o igual al 5% en corderos o cabritos y al 3% en animales adultos, y se llevan registros escritos.",
+        "55": "Mortalidad menor o igual al 5% en corderos o cabritos y al 3% en adultos, pero no se llevan registros.",
+        "20": "Mortalidad entre el 5% y el 6% en corderos o cabritos y entre el 3% y el 5% en adultos.",
+        "0": "Mortalidad entre el 6% y el 7% en corderos o cabritos y entre el 6% y el 8% en adultos, o no proporciona información."
+      }
+    },
+    {
+      "numero": 30,
+      "nombre": "Uso de medicamentos veterinarios",
+      "seccion_norma_productivos": "7.3.14",
+      "seccion_norma_familiares": null,
+      "metodo_evaluacion": "DOCUMENTAL",
+      "metodo_texto": "Documental y visual en el sitio de almacenamiento de los medicamentos.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "Se cumple con todas las Buenas Prácticas de Uso de Medicamentos Veterinarios (BPUMV): medicamentos con registro ICA, sin sustancias prohibidas ni promotores de crecimiento no autorizados, prescritos por un MV o MVZ, con registro de tratamientos y sin medicamentos vencidos.",
+        "55": "Cumple lo anterior, pero hay mal almacenamiento de medicamentos, agujas en mal estado o el lugar de almacenamiento está sucio.",
+        "20": "Cumple lo básico (registro ICA, sin sustancias prohibidas, prescripción de MV o MVZ y registro de tratamientos), pero se emplean medicamentos vencidos o se suman fallas de almacenamiento, agujas o limpieza.",
+        "0": "Usa medicamentos sin registro ICA, o sustancias prohibidas o promotores de crecimiento no autorizados, o los medicamentos no son prescritos por un MV o MVZ, o no se llevan registros de tratamientos."
+      },
+      "nota": "La redacción del nivel 20 en la norma es ambigua; se resumió de la forma más cercana al texto."
+    },
+    {
+      "numero": 31,
+      "nombre": "Plan sanitario firmado por MV o MVZ e implementado",
+      "seccion_norma_productivos": "7.3.15",
+      "seccion_norma_familiares": null,
+      "metodo_evaluacion": "DOCUMENTAL",
+      "metodo_texto": "Documental.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "Existe un plan sanitario escrito, firmado por un MV o MVZ, implementado y con registros.",
+        "55": "Existen registros de vacunaciones y control de parásitos internos y externos, pero no hay plan sanitario escrito.",
+        "20": "Existe plan sanitario, pero no está implementado y no hay registros.",
+        "0": "No hay plan sanitario ni registros de vacunaciones, ni evidencia de control de parásitos internos y externos ni de implementación."
+      }
+    },
+    {
+      "numero": 32,
+      "nombre": "Respuesta a la interacción con el humano",
+      "seccion_norma_productivos": "7.4.1",
+      "seccion_norma_familiares": "9.4.1",
+      "metodo_evaluacion": "VISUAL",
+      "metodo_texto": "Inspección visual.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "En todos los grupos los animales se mantienen tranquilos ante el manejador; pueden moverse, pero sin agitación.",
+        "55": "Los animales se muestran tranquilos ante el humano, pero atentos a sus movimientos.",
+        "20": "Los animales se muestran intranquilos ante el humano e intentan esconderse o huir.",
+        "0": "Los animales se alejan enérgicamente, saltando unos sobre otros o golpeándose contra las mallas o cercas."
+      }
+    },
+    {
+      "numero": 33,
+      "nombre": "Conocimiento y capacitación en bienestar animal",
+      "seccion_norma_productivos": "7.4.2",
+      "seccion_norma_familiares": "9.4.2",
+      "metodo_evaluacion": "DOCUMENTAL",
+      "metodo_texto": "Documental y entrevista al personal de la finca.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "Todas las personas demuestran conocimiento en bienestar animal y cuentan con certificación escrita.",
+        "55": "Más del 50% de las personas demuestra conocimiento y cuenta con certificación escrita, o el 100% demuestra conocimiento pero no tiene certificación.",
+        "20": "Más del 50% de las personas demuestra conocimiento en bienestar animal pero no cuenta con certificación escrita.",
+        "0": "Menos del 50% de las personas demuestra conocimiento en bienestar animal y no cuenta con certificación."
+      }
+    },
+    {
+      "numero": 34,
+      "nombre": "Elementos que restringen el movimiento",
+      "seccion_norma_productivos": "7.5.1",
+      "seccion_norma_familiares": null,
+      "metodo_evaluacion": "VISUAL",
+      "metodo_texto": "Inspección visual.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "Ningún animal está amarrado ni tiene palos amarrados al cuello que limiten su movimiento.",
+        "55": "Menos del 2% de los animales está amarrado o tiene palos amarrados al cuello que limiten su movimiento.",
+        "20": "Entre el 2% y el 5% de los animales está amarrado o tiene palos amarrados al cuello que limiten su movimiento.",
+        "0": "Más del 5% de los animales está amarrado o tiene palos amarrados al cuello que limiten su movimiento."
+      }
+    },
+    {
+      "numero": 35,
+      "nombre": "Generación de aislamiento social",
+      "seccion_norma_productivos": "7.5.2",
+      "seccion_norma_familiares": null,
+      "metodo_evaluacion": "VISUAL",
+      "metodo_texto": "Inspección visual.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "Ningún animal se observa aislado del resto del grupo.",
+        "55": "Menos del 5% de los animales se observa aislado del resto del grupo.",
+        "20": "Entre el 5% y el 10% de los animales se observa aislado del resto del grupo.",
+        "0": "Más del 10% de los animales se observa aislado del resto del grupo."
+      }
+    },
+    {
+      "numero": 36,
+      "nombre": "Potrero de descanso y/o elementos de enriquecimiento ambiental",
+      "seccion_norma_productivos": "7.5.3",
+      "seccion_norma_familiares": null,
+      "metodo_evaluacion": "VISUAL",
+      "metodo_texto": "Inspección visual.",
+      "niveles_definidos": [
+        100,
+        0
+      ],
+      "criterios": {
+        "100": "Los animales cuentan con un potrero de descanso y/o elementos de enriquecimiento ambiental.",
+        "0": "No cuentan con potrero de descanso ni con elementos de enriquecimiento ambiental."
+      },
+      "nota": "La norma solo define los niveles 100 y 0 para este indicador."
+    },
+    {
+      "numero": 37,
+      "nombre": "Agrupamiento social (solo predios familiares)",
+      "seccion_norma_productivos": null,
+      "seccion_norma_familiares": "9.5.1",
+      "metodo_evaluacion": "VISUAL",
+      "metodo_texto": "Inspección visual.",
+      "niveles_definidos": [
+        100,
+        55,
+        20,
+        0
+      ],
+      "criterios": {
+        "100": "Al 80% o más de los animales se les permite el agrupamiento social.",
+        "55": "Entre el 51% y el 80% de los animales se les permite el agrupamiento social.",
+        "20": "Entre el 20% y el 50% de los animales se les permite el agrupamiento social.",
+        "0": "A menos del 20% de los animales se les permite el agrupamiento social."
+      }
+    },
+    {
+      "numero": 38,
+      "nombre": "Animales amarrados (solo predios familiares)",
+      "seccion_norma_productivos": null,
+      "seccion_norma_familiares": "9.5.2",
+      "metodo_evaluacion": "VISUAL",
+      "metodo_texto": "Inspección visual.",
+      "niveles_definidos": [
+        100,
+        55,
+        0
+      ],
+      "criterios": {
+        "100": "Todos los animales amarrados lo están con justa causa y se garantizan todas las condiciones: espacio, lugar seguro, elementos apropiados, acceso a sombra, alimento y agua, y fijación correcta.",
+        "55": "Todos los animales amarrados lo están con justa causa, pero no se garantiza alguna de esas condiciones.",
+        "0": "Hay animales amarrados sin justa causa."
+      },
+      "nota": "La norma solo define los niveles 100, 55 y 0."
+    }
+  ]
+}
