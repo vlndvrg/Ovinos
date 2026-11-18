@@ -1,23 +1,28 @@
-import { ClipboardCheck, Download, Eye } from 'lucide-react';
+import { ClipboardCheck, Download, Eye, Pencil, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { descargarPdf, mensajeDeError } from '../api/client';
+import { api, descargarPdf, mensajeDeError } from '../api/client';
 import type { EvaluacionListado } from '../api/types';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { formatFecha } from '../lib/format';
-import { ClasificacionBadge, EstadoBadge, EmptyState, Button } from './ui';
+import { ClasificacionBadge, EstadoBadge, EmptyState, Button, BorrarEvaluacionModal } from './ui';
 
 export function EvaluacionTabla({
   evaluaciones,
   mostrarPredio = true,
+  onBorrada,
 }: {
   evaluaciones: EvaluacionListado[];
   mostrarPredio?: boolean;
+  onBorrada?: () => void;
 }) {
   const { usuario } = useAuth();
   const { toast } = useToast();
   const [descargando, setDescargando] = useState<number | null>(null);
+  const [abiertoBorrar, setAbiertoBorrar] = useState(false);
+  const [evaluacionBorrar, setEvaluacionBorrar] = useState<EvaluacionListado | null>(null);
+  const [borrando, setBorrando] = useState(false);
 
   const descargar = async (evaluacion: EvaluacionListado) => {
     setDescargando(evaluacion.id);
@@ -31,6 +36,28 @@ export function EvaluacionTabla({
       toast(mensajeDeError(error), 'error');
     } finally {
       setDescargando(null);
+    }
+  };
+
+  const pedirBorrar = (evaluacion: EvaluacionListado) => {
+    setEvaluacionBorrar(evaluacion);
+    setAbiertoBorrar(true);
+  };
+
+  const borrarEvaluacion = async (motivo: string) => {
+    if (!evaluacionBorrar) return;
+    const motivoLimpio = (motivo ?? '').trim() || 'Sin especificar';
+    setAbiertoBorrar(false);
+    setBorrando(true);
+    try {
+      await api.post(`/evaluaciones/${evaluacionBorrar.id}/borrar`, { motivo: motivoLimpio });
+      toast(`Evaluación borrada. Motivo: ${motivoLimpio}`);
+      if (onBorrada) onBorrada();
+      else window.location.reload();
+    } catch (error) {
+      toast(mensajeDeError(error), 'error');
+    } finally {
+      setBorrando(false);
     }
   };
 
@@ -112,6 +139,27 @@ export function EvaluacionTabla({
                         Resultados
                       </Link>
                     )}
+                    {evaluacion.estado === 'CERRADA' && usuario?.rol !== 'RESPONSABLE' && (
+                      <Link
+                        to={`/evaluaciones/${evaluacion.id}`}
+                        className="inline-flex h-8 items-center gap-1.5 rounded-lg px-2.5 text-[11px] font-bold text-brand-700 transition hover:bg-brand-50"
+                        aria-label="Editar evaluación cerrada"
+                      >
+                        <Pencil className="h-3.5 w-3.5" />
+                        Editar
+                      </Link>
+                    )}
+                    {usuario?.rol !== 'RESPONSABLE' && (
+                      <button
+                        type="button"
+                        onClick={() => pedirBorrar(evaluacion)}
+                        className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-red-50 px-2.5 text-[11px] font-bold text-red-700 transition hover:bg-red-100"
+                        aria-label="Borrar evaluación"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                        Borrar
+                      </button>
+                    )}
                     {evaluacion.estado === 'CERRADA' && (
                       <Button
                         variant="ghost"
@@ -177,6 +225,25 @@ export function EvaluacionTabla({
                   Resultados
                 </Link>
               )}
+              {evaluacion.estado === 'CERRADA' && usuario?.rol !== 'RESPONSABLE' && (
+                <Link
+                  to={`/evaluaciones/${evaluacion.id}`}
+                  className="inline-flex h-9 flex-1 items-center justify-center gap-1.5 rounded-xl px-2 text-xs font-bold text-brand-700 hover:bg-brand-50"
+                >
+                  <Pencil className="h-4 w-4" />
+                  Editar
+                </Link>
+              )}
+              {usuario?.rol !== 'RESPONSABLE' && (
+                <button
+                  type="button"
+                  onClick={() => pedirBorrar(evaluacion)}
+                  className="inline-flex h-9 flex-1 items-center justify-center gap-1.5 rounded-xl bg-red-50 text-xs font-bold text-red-700"
+                >
+                  <Trash2 className="h-4 w-4" />
+                  Borrar
+                </button>
+              )}
               {evaluacion.estado === 'CERRADA' && (
                 <Button
                   variant="outline"
@@ -193,6 +260,18 @@ export function EvaluacionTabla({
           </div>
         ))}
       </div>
+
+      <BorrarEvaluacionModal
+        open={abiertoBorrar}
+        onClose={() => setAbiertoBorrar(false)}
+        loading={borrando}
+        extraInfo={
+          evaluacionBorrar
+            ? `La evaluación del predio ${evaluacionBorrar.predio_nombre} (${evaluacionBorrar.estado}) se eliminará permanentemente.`
+            : undefined
+        }
+        onConfirm={(motivo) => void borrarEvaluacion(motivo)}
+      />
     </>
   );
 }

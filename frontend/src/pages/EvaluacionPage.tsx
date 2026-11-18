@@ -7,11 +7,12 @@ import {
   Info,
   Lock,
   MapPin,
+  Loader2,
   Save,
 } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { api, mensajeDeError } from '../api/client';
+import { api, ApiError, mensajeDeError } from '../api/client';
 import type {
   EvaluacionDetalle,
   ItemEvaluacion,
@@ -24,6 +25,7 @@ import {
   Card,
   ClasificacionBadge,
   ConfirmDialog,
+  BorrarEvaluacionModal,
   ErrorState,
   LoadingBlock,
   MetodoBadge,
@@ -104,6 +106,7 @@ export function EvaluacionPage() {
   const [guardandoCabecera, setGuardandoCabecera] = useState(false);
   const [cerrando, setCerrando] = useState(false);
   const [confirmarCierre, setConfirmarCierre] = useState(false);
+  const [confirmarBorrar, setConfirmarBorrar] = useState(false);
 
   const itemsRef = useRef<ItemEvaluacion[]>([]);
   const observacionesRef = useRef<Record<number, string>>({});
@@ -198,7 +201,7 @@ export function EvaluacionPage() {
   };
 
   const calificar = async (item: ItemEvaluacion, puntaje: Puntaje) => {
-    if (!data || cerrada) return;
+    if (!data) return;
     const anterior = item.puntaje;
 
     actualizarItem(item.indicador_id, { puntaje });
@@ -214,6 +217,10 @@ export function EvaluacionPage() {
       );
       actualizarItem(item.indicador_id, respuesta.item);
       setResumen(respuesta.resumen);
+      if (cerrada) {
+        setData((actual) => (actual ? { ...actual, estado: 'BORRADOR' } : actual));
+        toast('La evaluación se reabrió a borrador al modificar un puntaje.');
+      }
       setObservaciones((actuales) => ({
         ...actuales,
         [item.indicador_id]: respuesta.item.observacion ?? '',
@@ -221,6 +228,11 @@ export function EvaluacionPage() {
     } catch (err) {
       actualizarItem(item.indicador_id, { puntaje: anterior });
       toast(mensajeDeError(err), 'error');
+      if (err instanceof ApiError && (err.status === 0 || err.status >= 500)) {
+        // Si la petición falló después de guardarse en el servidor, recargamos
+        // para que el progreso y el botón de cierre reflejen el estado real.
+        void cargar();
+      }
     } finally {
       setGuardando((actuales) => {
         const copia = { ...actuales };
@@ -232,7 +244,7 @@ export function EvaluacionPage() {
 
   const guardarObservacion = async (indicadorId: number) => {
     const item = itemsRef.current.find((actual) => actual.indicador_id === indicadorId);
-    if (!item || item.puntaje === null || cerrada) return;
+    if (!item || item.puntaje === null) return;
 
     const texto = (observacionesRef.current[indicadorId] ?? '').trim();
     if ((item.observacion ?? '').trim() === texto) return;
@@ -245,6 +257,10 @@ export function EvaluacionPage() {
       );
       actualizarItem(indicadorId, respuesta.item);
       setResumen(respuesta.resumen);
+      if (cerrada) {
+        setData((actual) => (actual ? { ...actual, estado: 'BORRADOR' } : actual));
+        toast('La evaluación se reabrió a borrador al modificar una observación.');
+      }
     } catch (err) {
       toast(mensajeDeError(err), 'error');
     } finally {
@@ -267,11 +283,11 @@ export function EvaluacionPage() {
   };
 
   const guardarCabecera = async (valor: string) => {
-    if (!data || cerrada) return;
+    if (!data) return;
     setGuardandoCabecera(true);
     try {
       await api.patch(`/evaluaciones/${id}`, { observaciones: valor.trim() || null });
-      setData((actual) => (actual ? { ...actual, observaciones: valor.trim() || null } : actual));
+      setData((actual) => (actual ? { ...actual, observaciones: valor.trim() || null, estado: cerrada ? 'BORRADOR' : actual.estado } : actual));
     } catch (err) {
       toast(mensajeDeError(err), 'error');
     } finally {
@@ -305,10 +321,27 @@ export function EvaluacionPage() {
     }
   };
 
+  const borrarEvaluacion = async (motivo: string) => {
+    const motivoLimpio = (motivo ?? '').trim() || 'Sin especificar';
+    setConfirmarBorrar(false);
+    try {
+      await api.post<EvaluacionDetalle>(`/evaluaciones/${id}/borrar`, { motivo: motivoLimpio });
+      toast(`Evaluación borrada. Motivo: ${motivoLimpio}`);
+      navigate('/evaluaciones');
+    } catch (err) {
+      toast(mensajeDeError(err), 'error');
+    }
+  };
+
   if (cargando) return <LoadingBlock label="Cargando evaluación..." />;
   if (errorCarga || !data || !resumen) {
     return <ErrorState message={errorCarga ?? 'Evaluación no encontrada.'} onRetry={cargar} />;
   }
+
+  // Determinar si la evaluación está en borrador (no cerrada y sin completar obligatoria)
+  const enBorrador = data.estado === 'BORRADOR';
+  const completada = resumen.completo; // todos los indicadores aplicables tienen puntaje
+  const tienePendientes = data.estado === 'BORRADOR' && !completada;
 
   const estilo = estiloClasificacion(resumen.clasificacion);
   const progreso = resumen.total > 0 ? (resumen.calificados / resumen.total) * 100 : 0;
@@ -344,13 +377,12 @@ export function EvaluacionPage() {
       />
 
       {cerrada && (
-        <div className="mb-5 flex items-start gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
+        <div className="mb-5 flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
           <Lock className="mt-0.5 h-4 w-4 shrink-0" />
           <div>
-            <p className="font-bold">Esta evaluación está cerrada.</p>
-            <p className="mt-0.5 text-xs leading-relaxed text-emerald-800/80">
-              Los puntajes y la clasificación quedaron congelados y no pueden modificarse. Puede
-              consultar los resultados o descargar el reporte.
+            <p className="font-bold">Esta evaluación está cerrada — puedes editarla.</p>
+            <p className="mt-0.5 text-xs leading-relaxed text-amber-800/80">
+              Si modificas cualquier puntaje u observación, la evaluación se reabrirá automáticamente a borrador y podrás volver a cerrarla con el nuevo resultado.
             </p>
           </div>
         </div>
@@ -515,7 +547,7 @@ export function EvaluacionPage() {
                       <ScoreSelector
                         value={item.puntaje}
                         onChange={(puntaje) => void calificar(item, puntaje)}
-                        disabled={cerrada || Boolean(guardando[item.indicador_id])}
+                        disabled={Boolean(guardando[item.indicador_id])}
                       />
                     </div>
 
@@ -532,7 +564,7 @@ export function EvaluacionPage() {
                           }
                           void guardarObservacion(item.indicador_id);
                         }}
-                        disabled={cerrada || item.puntaje === null}
+                        disabled={item.puntaje === null}
                         rows={2}
                         maxLength={1000}
                         placeholder={
@@ -642,29 +674,66 @@ export function EvaluacionPage() {
             </div>
 
             <div className="mt-5 border-t border-brand-900/[0.07] pt-4">
-              {cerrada ? (
-                <Link to={`/evaluaciones/${data.id}/resultados`}>
-                  <Button className="w-full" icon={FileText}>
-                    Ver resultados
-                  </Button>
-                </Link>
-              ) : (
+              {enBorrador ? (
+                // Estado de borrador: mostrar botones de "Continuar" y "Borrar"
                 <>
-                  <Button
-                    className="w-full"
-                    icon={CheckCircle2}
-                    disabled={!resumen.completo}
-                    onClick={() => setConfirmarCierre(true)}
-                  >
-                    Cerrar evaluación
-                  </Button>
-                  {!resumen.completo && (
+                  {tienePendientes && (
+                    <Button
+                      variant="outline"
+                      className="w-full mb-2"
+                      icon={Loader2}
+                      loading={false}
+                    >
+                      Continuar evaluación
+                    </Button>
+                  )}
+                  {!completada && (
+                    <button
+                      className="w-full mb-2 bg-red-600 text-white px-4 py-2 rounded"
+                      onClick={() => setConfirmarBorrar(true)}
+                    >
+                      Borrar evaluación
+                    </button>
+                  )}
+                  {completada && (
+                    <Button
+                      variant="outline"
+                      className="w-full mb-2"
+                      onClick={() => setConfirmarCierre(true)}
+                    >
+                      Cerrar evaluación
+                    </Button>
+                  )}
+                </>
+              ) : (
+                // Estado cerrado o en progreso normal
+                <>
+                  {tienePendientes && (
                     <p className="mt-2 flex items-start gap-1.5 text-[11px] leading-relaxed text-amber-700">
                       <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
                       Faltan {faltantes} indicador(es) por calificar. Debe completar todos los
                       indicadores aplicables para cerrar.
                     </p>
                   )}
+                  {completada || !tienePendientes ? (
+                    <>
+                      {!cerrada && (
+                        <Button
+                          variant="outline"
+                          className="w-full mb-2"
+                          onClick={() => setConfirmarCierre(true)}
+                        >
+                          Cerrar evaluación
+                        </Button>
+                      )}
+                      <button
+                        className="w-full bg-red-600 text-white px-4 py-2 rounded"
+                        onClick={() => setConfirmarBorrar(true)}
+                      >
+                        Borrar evaluación
+                      </button>
+                    </>
+                  ) : null}
                 </>
               )}
             </div>
@@ -701,11 +770,10 @@ export function EvaluacionPage() {
                 if (timerCabecera.current) window.clearTimeout(timerCabecera.current);
                 void guardarCabecera(obsGenerales);
               }}
-              disabled={cerrada}
               rows={5}
               maxLength={2000}
               placeholder="Contexto de la visita, manejo general, condiciones climáticas..."
-              hint={cerrada ? undefined : 'Se guarda automáticamente al escribir.'}
+              hint="Se guarda automáticamente al escribir."
             />
           </Card>
         </div>
@@ -719,6 +787,12 @@ export function EvaluacionPage() {
         loading={cerrando}
         onCancel={() => setConfirmarCierre(false)}
         onConfirm={() => void cerrarEvaluacion()}
+      />
+      <BorrarEvaluacionModal
+        open={confirmarBorrar}
+        onClose={() => setConfirmarBorrar(false)}
+        extraInfo={data ? `La evaluación del predio ${data.predio.nombre} (${data.estado}) se eliminará permanentemente.` : undefined}
+        onConfirm={(motivo) => void borrarEvaluacion(motivo)}
       />
     </div>
   );

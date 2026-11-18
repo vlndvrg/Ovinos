@@ -1,520 +1,269 @@
-# EBA · Bienestar Animal
+# EBA - Evaluación de Bienestar Animal
 
-Sistema web para digitalizar la metodología de **Evaluación de Bienestar Animal (EBA)** del ICA en predios de ovinos y caprinos. Permite registrar predios, aplicar el catálogo de indicadores, calificar cada criterio, calcular el puntaje ponderado por libertades, cerrar evaluaciones y consultar resultados, historial y reportes.
+Sistema para registrar predios, evaluar indicadores de bienestar animal en ovinos y caprinos, calcular la clasificación final, generar recomendaciones y descargar reportes en PDF.
 
-El repositorio es un monorepo con dos aplicaciones:
+## Tecnologías
 
-- `backend`: API REST con Node.js, Express, TypeScript, MySQL/MariaDB y JWT.
-- `frontend`: aplicación React + Vite + TypeScript + Tailwind CSS.
+- **Backend:** Node.js, Express, MariaDB/MySQL (`mysql2`), JWT, PDFKit.
+- **Frontend:** React 18, TypeScript, Vite, Tailwind CSS, React Router, Recharts.
+- **Base de datos:** MariaDB / MySQL.
 
----
-
-## 1. Requisitos
-
-- Node.js 20 o superior.
-- npm 10 o superior.
-- MySQL 8 o MariaDB 10.5 o superior.
-- Una base de datos vacía o permisos para crearla.
-
-Verifique las versiones:
-
-```bash
-node --version
-npm --version
-mysql --version
-```
-
-> Si usa XAMPP, WAMP o un servidor MySQL/MariaDB local, inicie primero el servicio de base de datos. Ajuste `DB_PORT` si el servidor no escucha en `3306`.
-
----
-
-## 2. Estructura del proyecto
+## Estructura del proyecto
 
 ```text
-Ovinos/
+.
 ├── backend/
-│   ├── db/
-│   │   ├── schema.sql          # Tablas, llaves, índices y restricciones
-│   │   ├── seed.sql            # Libertades, 38 indicadores y administrador
-│   │   └── seed_demo.sql       # Datos opcionales de demostración
-│   ├── scripts/
-│   │   ├── setup-db.ts         # Crea la base, ejecuta schema.sql y seed.sql
-│   │   └── run-sql.ts          # Ejecuta un archivo SQL sobre la base configurada
 │   ├── src/
-│   │   ├── config/             # Variables de entorno
-│   │   ├── controllers/        # Entrada HTTP
-│   │   ├── db/                 # Pool y transacciones MySQL
-│   │   ├── domain/             # Cálculos, filtrado y clasificación EBA
-│   │   ├── middleware/         # Autenticación, roles y errores
-│   │   ├── repositories/       # Consultas SQL parametrizadas
-│   │   ├── routes/             # Definición de endpoints
-│   │   ├── services/           # Reglas de negocio y control de acceso
-│   │   ├── types/              # Tipos del dominio
-│   │   └── validation/         # Esquemas Zod
+│   │   ├── config/          # Conexión a MariaDB
+│   │   ├── controllers/     # Lógica de la API
+│   │   ├── data/            # Datos iniciales y seed
+│   │   ├── middleware/      # Autenticación y roles
+│   │   ├── routes/          # Rutas Express
+│   │   └── utils/           # IA simulada, PDF, helpers
+│   ├── schema.sql           # Creación de tablas
 │   ├── .env.example
 │   └── package.json
 ├── frontend/
 │   ├── src/
-│   │   ├── api/                # Cliente HTTP y tipos
-│   │   ├── components/         # Layout, tablas, gráficas y UI reutilizable
-│   │   ├── context/            # Sesión y autenticación
-│   │   ├── lib/                # Formato, cálculos de vista previa y utilidades
-│   │   └── pages/              # Login, panel, predios, evaluaciones, reportes, etc.
+│   ├── .env.example
 │   └── package.json
-├── package.json                # Workspaces y scripts raíz
+├── iniciar-eba.bat          # Arranque rápido en Windows
+├── detener-eba.bat          # Detiene backend y frontend
 └── README.md
 ```
 
----
+## Requisitos
 
-## 3. Instalación
+- Node.js 18 o superior (probado con Node 24).
+- npm.
+- MariaDB 10.6+ o MySQL 8+.
 
-Desde la raíz del proyecto:
+## 1. Preparar la base de datos
 
-```bash
-npm install
-```
-
-Esto instala las dependencias de `backend`, `frontend` y las herramientas de desarrollo del monorepo.
-
----
-
-## 4. Configuración del entorno
-
-Copie el archivo de ejemplo y edítelo:
-
-```bash
-copy backend\.env.example backend\.env
-```
-
-En Linux/macOS:
-
-```bash
-cp backend/.env.example backend/.env
-```
-
-Variables disponibles:
-
-| Variable | Descripción | Ejemplo |
-| --- | --- | --- |
-| `DB_HOST` | Host de MySQL/MariaDB | `localhost` |
-| `DB_PORT` | Puerto de MySQL/MariaDB | `3306` |
-| `DB_USER` | Usuario de la base de datos | `root` |
-| `DB_PASSWORD` | Contraseña de la base de datos | `mi_clave` |
-| `DB_NAME` | Nombre de la base de datos | `eba_bienestar` |
-| `JWT_SECRET` | Secreto para firmar tokens JWT. Use una cadena larga y aleatoria | `...` |
-| `GEMINI_API_KEY` | Clave de la API de Google Gemini (gratuita en Google AI Studio). Opcional; si no se define, las recomendaciones IA no están disponibles. | `AIza...` |
-| `GEMINI_MODEL` | Modelo de Gemini a usar (nivel gratuito recomendado: Flash). | `gemini-1.5-flash-latest` |
-| `PORT` | Puerto de la API | `4000` |
-| `CORS_ORIGIN` | Origen(es) permitidos, separados por coma | `http://localhost:5173` |
-| `NODE_ENV` | Entorno de ejecución | `development` |
-
-Ejemplo de `backend/.env`:
-
-```env
-DB_HOST=localhost
-DB_PORT=3306
-DB_USER=root
-DB_PASSWORD=
-DB_NAME=eba_bienestar
-JWT_SECRET=cambie-este-secreto-por-una-cadena-larga-y-aleatoria
-
-# Recomendaciones con IA (Gemini)
-# Obtenga una clave gratuita en https://aistudio.google.com/
-GEMINI_API_KEY=
-GEMINI_MODEL=gemini-1.5-flash-latest
-
-PORT=4000
-CORS_ORIGIN=http://localhost:5173
-NODE_ENV=development
-```
-
-> `backend/.env` contiene credenciales y está excluido del control de versiones. No lo publique.
-
-> **Clave de Gemini:** Obtenga una clave gratuita en [Google AI Studio](https://aistudio.google.com/). El modelo por defecto `gemini-1.5-flash-latest` está disponible en el nivel gratuito. Si no define `GEMINI_API_KEY`, la funcionalidad de recomendaciones IA no estará disponible (la aplicación sigue funcionando normalmente sin ella).
-
----
-
-## 5. Base de datos
-
-### 5.1 Crear la base y cargar el catálogo
-
-Con MySQL/MariaDB iniciado y `backend/.env` configurado:
-
-```bash
-npm run db:setup
-```
-
-El script:
-
-1. Crea la base `DB_NAME` si no existe, con `utf8mb4`.
-2. Ejecuta `backend/db/schema.sql`.
-3. Ejecuta `backend/db/seed.sql`.
-
-Al finalizar se crea el usuario administrador:
-
-```text
-Correo:     admin@eba.gov.co
-Contraseña: Admin123*
-```
-
-Cambie la contraseña después del primer ingreso desde la pantalla de usuarios o mediante una actualización administrada.
-
-### 5.2 Datos de demostración opcionales
-
-```bash
-npm run db:seed:demo
-```
-
-Crea:
-
-- Evaluadora: `evaluador.demo@eba.gov.co` / `Evaluador123*`
-- Responsable: `responsable.demo@eba.gov.co` / `Responsable123*`
-- Predio “Predio La Esperanza”, ovino de lana, sistema semi-intensivo, 120 animales.
-- Una evaluación cerrada de demostración con resultado **92.13 / EXCELENTE BIENESTAR**.
-
-El seed de demostración es idempotente: puede ejecutarse varias veces sin duplicar el predio ni la evaluación.
-
-### 5.3 Reiniciar la base
-
-`npm run db:setup` no elimina datos existentes. Si necesita empezar desde cero:
+Crea la base y el usuario (ajusta la contraseña):
 
 ```sql
-DROP DATABASE eba_bienestar;
+CREATE DATABASE eba_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'eba_user'@'localhost' IDENTIFIED BY 'eba_password';
+GRANT ALL PRIVILEGES ON eba_db.* TO 'eba_user'@'localhost';
+FLUSH PRIVILEGES;
 ```
 
-Luego vuelva a ejecutar:
+Luego ejecuta el esquema:
 
-```bash
-npm run db:setup
-npm run db:seed:demo
+```powershell
+cd backend
+Get-Content schema.sql -Raw | & "C:\Program Files\MariaDB 13.0\bin\mysql.exe" -u eba_user -p --port=3307 eba_db
 ```
 
-### 5.4 Tablas principales
+> Ajusta la ruta de `mysql.exe` y el puerto según tu instalación. En este proyecto se usa el puerto **3307**.
 
-- `usuarios`: administradores, evaluadores y responsables.
-- `predios`: ubicación, especie, sistema productivo, condición de lana y responsable asignado.
-- `libertades`: las cinco libertades y sus pesos.
-- `indicadores`: catálogo metodológico, criterios, método y reglas de aplicabilidad.
-- `evaluaciones`: cabecera, estado, puntaje y clasificación congelados al cerrar.
-- `evaluacion_indicadores`: snapshot de indicadores aplicables y calificación de cada uno.
+## Base de datos incluida
 
----
+El repositorio incluye un respaldo completo en `database/eba_db_dump.sql` con la estructura y los datos de demostración (5 libertades, 3 usuarios, 4 predios, 39 indicadores y una evaluación cerrada).
 
-## 6. Ejecución
+Para restaurarlo desde cero, abre PowerShell en la raíz del proyecto y ejecuta:
 
-Desde la raíz:
+```powershell
+cmd /c ""C:\Program Files\MariaDB 13.0\bin\mysql.exe" -u root -p --port=3307 < database\eba_db_dump.sql"
+```
 
-```bash
+Si ya creaste la base y el usuario `eba_user`, puedes importarlo con ese usuario:
+
+```powershell
+cmd /c ""C:\Program Files\MariaDB 13.0\bin\mysql.exe" -u eba_user -p --port=3307 < database\eba_db_dump.sql"
+```
+
+> El respaldo contiene las contraseñas de demostración en texto plano. Cámbialas antes de usar el sistema en producción. No contiene usuarios ni privilegios de MariaDB, solo las tablas de la base `eba_db`.
+
+## 2. Configurar y arrancar el backend
+
+```powershell
+cd backend
+npm install
+Copy-Item .env.example .env
+# Edita .env con tus datos reales de conexión
 npm run dev
 ```
 
-Se inician ambos servicios con `concurrently`:
-
-- API: `http://localhost:4000/api`
-- Frontend: `http://localhost:5173`
-
-Vite redirige las solicitudes `/api` hacia `http://localhost:4000`.
-
-Si la API no puede conectarse a la base de datos, el proceso termina con un mensaje de error. Verifique `backend/.env`, que MySQL/MariaDB esté iniciado y que `npm run db:setup` se haya ejecutado.
-
-### Scripts disponibles
-
-| Comando | Descripción |
-| --- | --- |
-| `npm run dev` | Inicia API y frontend en modo desarrollo |
-| `npm run build` | Compila backend y frontend |
-| `npm run test` | Ejecuta las pruebas unitarias del backend |
-| `npm run db:setup` | Crea la base y carga esquema + seed obligatorio |
-| `npm run db:seed:demo` | Carga usuarios, predio y evaluación de demostración |
-| `npm run db:update-criterios` | Actualiza los criterios oficiales de la norma en la BD (idempotente) |
-
-Comandos por workspace:
-
-```bash
-npm run dev -w backend
-npm run dev -w frontend
-npm run build -w backend
-npm run build -w frontend
-npm run test -w backend
-```
-
----
-
-## 7. Roles y permisos
-
-### Administrador
-
-- Gestiona usuarios: crear, editar, activar/desactivar y asignar predios a responsables.
-- Consulta todos los predios, evaluaciones e historial global.
-- En **Historial global** filtra las evaluaciones cerradas por predio, rango de fechas y clasificación, y consulta una gráfica de evolución.
-- Puede crear y editar predios y evaluaciones.
-- Administra el catálogo de indicadores: descripción y criterios de puntuación.
-- No puede desactivar ni quitar el rol al último administrador activo.
-- No puede desactivar su propio usuario.
-- No puede cambiar el rol de un responsable que todavía tiene predios asignados; primero debe reasignarlos.
-
-### Evaluador
-
-- Registra y edita predios.
-- Al registrar o editar un predio puede seleccionar o cambiar el responsable entre los usuarios activos con rol `RESPONSABLE`. Esta asignación no está restringida al administrador.
-- Crea evaluaciones para predios.
-- Califica indicadores, guarda borradores y cierra evaluaciones.
-- Solo puede editar/cerrar las evaluaciones que él mismo creó.
-- Consulta el historial de los predios.
-
-### Responsable de predio
-
-- Acceso de solo lectura.
-- Solo ve los predios donde está asignado como responsable.
-- Solo ve evaluaciones **cerradas** de sus propios predios.
-- No puede ver borradores, crear predios, crear evaluaciones ni modificar calificaciones.
-- Puede descargar el reporte PDF y consultar el historial de sus predios.
-- El backend aplica el filtro de responsable en cada consulta; no depende de filtros enviados por el cliente.
-
----
-
-## 8. Metodología implementada
-
-### 8.1 Libertades y pesos
-
-| Libertad | Peso |
-| --- | --- |
-| L1. Libre de hambre, sed y desnutrición | 20 % |
-| L2. Libre de molestias físicas y térmicas | 20 % |
-| L3. Libre de dolor, lesión y enfermedad | 35 % |
-| L4. Libre de temor y angustia | 10 % |
-| L5. Libre de impedimentos de comportamiento natural | 15 % |
-
-Los pesos se almacenan como fracciones (`0.20`, `0.35`, etc.).
-
-### 8.2 Puntajes permitidos
-
-Cada indicador se califica únicamente con:
+El backend queda en `http://localhost:4000`. Verifica con:
 
 ```text
-0 · 20 · 55 · 100
+http://localhost:4000/api/health
 ```
 
-### 8.3 Filtrado de indicadores
+### Poblar datos iniciales (opcional)
 
-Un indicador aplica según:
-
-- Sistema productivo: `EXTENSIVO`, `SEMI_INTENSIVO`, `INTENSIVO` o `FAMILIAR`.
-- Especie: `OVINO` o `CAPRINO`.
-- Condición de ovino de lana.
-
-Reglas especiales incluidas en el catálogo:
-
-- Indicador 7: no aplica a sistemas familiares.
-- Indicadores 15 y 16: no aplican a sistemas extensivos.
-- Indicador 20: solo caprinos.
-- Indicador 25: solo ovinos.
-- Indicador 26: solo ovinos de lana.
-- Indicadores 30, 31 y 34 a 36: no aplican a sistemas familiares.
-- Indicadores 37 y 38: solo sistemas familiares.
-
-Al crear una evaluación, el backend calcula los indicadores aplicables y guarda un snapshot en `evaluacion_indicadores`. El frontend replica el filtro únicamente para la vista previa; el backend es la fuente autoritativa.
-
-### 8.4 Cálculo
-
-1. **Puntaje de libertad**: promedio simple de los indicadores aplicables ya calificados. Está aislado en `backend/src/domain/scoring.ts` en la función `calcularPuntajeLibertad`, documentada para reemplazarse si la metodología cambia.
-2. **Puntaje total**: suma de `puntaje de libertad × peso de la libertad`.
-3. **Borradores**: se muestra un total proyectado, renormalizado por el peso de las libertades que ya tienen al menos un indicador calificado. Es solo una vista parcial.
-4. **Cierre**: exige que todos los indicadores del snapshot estén calificados. Al cerrar se calcula el total oficial y se congelan puntaje, clasificación y fecha de cierre. Después no se pueden modificar las calificaciones.
-
-### 8.5 Clasificación
-
-| Puntaje | Clasificación |
-| --- | --- |
-| `>= 90` | EXCELENTE BIENESTAR |
-| `>= 75` y `< 90` | ALTO |
-| `>= 50` y `< 75` | MEDIO |
-| `< 50` | BAJO |
-
----
-
-## 9. Funcionalidades del frontend
-
-- Inicio de sesión con JWT y cierre de sesión.
-- Panel adaptado al rol con métricas, distribución por clasificación, últimas evaluaciones y predios.
-- Listado, búsqueda y filtros de predios.
-- Creación y edición de predios con validación.
-- Detalle de predio con evaluaciones, historial y acceso a resultados.
-- Creación de evaluación con selección de predio y fecha.
-- Evaluación por pestañas/libertades, barra de progreso, criterios, observaciones y puntaje parcial en vivo.
-- Autoguardado por indicador y reanudación de borradores.
-- Confirmación antes de cerrar una evaluación.
-- Resultados con gráfica por libertad, total, clasificación, mejores/peores indicadores y acceso al reporte.
-- Reporte imprimible y descarga de PDF generado en el servidor.
-- Historial por predio con gráfica de evolución.
-- Historial global para el administrador con filtros por predio, rango de fechas y clasificación, tabla de resultados y gráfica de evolución.
-- Administración de usuarios, activación/desactivación y asignación de predios.
-- Catálogo de indicadores editable por el administrador (descripción y criterios).
-- Estados de carga, mensajes de error y confirmaciones.
-- Protección de rutas por rol en el frontend y en el backend.
-
----
-
-## 10. API
-
-Prefijo: `/api`
-
-### Autenticación
-
-| Método | Ruta | Descripción |
-| --- | --- | --- |
-| `POST` | `/auth/login` | Inicia sesión y devuelve JWT |
-| `GET` | `/auth/me` | Devuelve el usuario autenticado |
-
-### Panel y catálogo
-
-| Método | Ruta | Descripción |
-| --- | --- | --- |
-| `GET` | `/dashboard` | Métricas y datos del panel según el rol |
-| `GET` | `/libertades` | Lista las cinco libertades |
-| `GET` | `/indicadores` | Lista el catálogo de indicadores |
-| `PUT` | `/indicadores/:id` | Actualiza descripción/criterios (solo ADMIN) |
-
-### Predios
-
-| Método | Ruta | Descripción |
-| --- | --- | --- |
-| `GET` | `/predios` | Lista predios según el rol |
-| `GET` | `/predios/:id` | Detalle de un predio |
-| `GET` | `/predios/:id/historial` | Historial de evaluaciones cerradas |
-| `POST` | `/predios` | Crea un predio (ADMIN/EVALUADOR) |
-| `PUT` | `/predios/:id` | Edita un predio (ADMIN/EVALUADOR) |
-| `DELETE` | `/predios/:id` | Elimina un predio (solo ADMIN) |
-
-### Evaluaciones
-
-| Método | Ruta | Descripción |
-| --- | --- | --- |
-| `GET` | `/evaluaciones` | Lista evaluaciones según el rol |
-| `GET` | `/evaluaciones/historial-global` | Historial de evaluaciones cerradas con filtros `predioId`, `fechaDesde`, `fechaHasta` y `clasificacion` (solo ADMIN) |
-| `GET` | `/evaluaciones/:id` | Detalle, indicadores y resumen |
-| `POST` | `/evaluaciones` | Crea una evaluación (ADMIN/EVALUADOR) |
-| `PATCH` | `/evaluaciones/:id` | Actualiza fecha/observaciones |
-| `PATCH` | `/evaluaciones/:id/indicadores/:indicadorId` | Califica un indicador |
-| `POST` | `/evaluaciones/:id/cerrar` | Valida y cierra la evaluación |
-| `DELETE` | `/evaluaciones/:id` | Elimina un borrador |
-| `GET` | `/evaluaciones/:id/reporte.pdf` | Descarga el reporte PDF |
-| `GET` | `/evaluaciones/:id/recomendaciones-ia` | Obtiene recomendaciones IA (solo CERRADA, acceso por rol/ownership) |
-| `POST` | `/evaluaciones/:id/recomendaciones-ia` | Genera/regenera recomendaciones IA con Gemini |
-| `DELETE` | `/evaluaciones/:id/recomendaciones-ia` | Elimina recomendación IA (solo ADMIN/EVALUADOR) |
-
-### Usuarios
-
-| Método | Ruta | Descripción |
-| --- | --- | --- |
-| `GET` | `/usuarios` | Lista usuarios (solo ADMIN) |
-| `GET` | `/usuarios/responsables` | Lista responsables (ADMIN/EVALUADOR) |
-| `POST` | `/usuarios` | Crea usuario (solo ADMIN) |
-| `PUT` | `/usuarios/:id` | Edita usuario (solo ADMIN) |
-| `PATCH` | `/usuarios/:id/estado` | Activa/desactiva usuario (solo ADMIN) |
-| `PATCH` | `/usuarios/:id/predios` | Asigna predios a un responsable (solo ADMIN) |
-
-Todas las rutas protegidas requieren el encabezado:
-
-```http
-Authorization: Bearer <token>
+```powershell
+node --input-type=module -e "import('./src/data/seedDb.js').then(async (m) => { await m.ejecutarSeed(); const { pool } = await import('./src/config/db.js'); await pool.end(); })"
 ```
 
----
+El seed crea las 5 libertades, 3 usuarios de demostración, 4 predios y 39 indicadores. **Borra las evaluaciones existentes.**
 
-## 11. Pruebas
+## 3. Configurar y arrancar el frontend
 
-```bash
-npm run test
+```powershell
+cd frontend
+npm install
+Copy-Item .env.example .env
+npm run dev
 ```
 
-Las pruebas unitarias cubren:
+Abre `http://localhost:5173`.
 
-- Filtrado de indicadores por sistema productivo, especie y condición de lana.
-- Promedio de libertad, suma ponderada, proyección de borradores y clasificación.
-- Cierre de evaluaciones: bloqueo por indicadores faltantes, congelamiento de resultados y control de acceso por rol.
-- Calificación por indicador y conservación de observaciones.
-- Creación de evaluaciones y validación de indicadores aplicables.
-- Historial global: control de acceso exclusivo para administrador y paso de filtros al repositorio.
+## Inicio rápido en Windows
 
-También se verificó manualmente el flujo completo contra una instancia temporal de MariaDB: login de los tres roles, creación de predio y evaluación, calificación, bloqueo de cierre incompleto, cierre, resultados, PDF, historial y restricciones del responsable.
+Con la base de datos ya creada y los `.env` configurados:
 
----
+1. Doble clic en `iniciar-eba.bat`.
+2. Se abren el backend, el frontend y el navegador.
 
-## 12. Compilación para producción
+Para detener todo: `detener-eba.bat` o `Ctrl + C` en cada ventana.
 
-```bash
-npm run build
+## Usuarios de demostración
+
+| Correo | Contraseña | Rol |
+|---|---|---|
+| `admin@ica.gov.co` | `admin123` | ADMIN |
+| `evaluador@ica.gov.co` | `eval123` | EVALUADOR |
+| `responsable@ica.gov.co` | `resp123` | RESPONSABLE |
+
+> Cambia estas credenciales antes de usar el sistema en producción.
+
+## Endpoints principales
+
+| Método | Ruta | Descripción |
+|---|---|---|
+| POST | `/api/auth/login` | Inicio de sesión |
+| GET | `/api/auth/me` | Usuario autenticado |
+| GET | `/api/predios` | Lista de predios |
+| POST | `/api/predios` | Crear predio |
+| PUT | `/api/predios/:id` | Actualizar predio |
+| DELETE | `/api/predios/:id` | Eliminar predio |
+| GET | `/api/predios/:id/historial` | Historial del predio |
+| GET | `/api/indicadores` | Catálogo de indicadores |
+| PUT | `/api/indicadores/:id` | Editar indicador |
+| GET | `/api/libertades` | Las 5 libertades |
+| GET | `/api/evaluaciones` | Lista de evaluaciones |
+| POST | `/api/evaluaciones` | Crear evaluación |
+| GET | `/api/evaluaciones/:id` | Detalle de evaluación |
+| PATCH | `/api/evaluaciones/:id/indicadores/:indicadorId` | Calificar indicador |
+| POST | `/api/evaluaciones/:id/cerrar` | Cerrar evaluación |
+| GET | `/api/evaluaciones/:id/recomendaciones-ia` | Recomendación IA |
+| POST | `/api/evaluaciones/:id/recomendaciones-ia` | Regenerar recomendación |
+| GET | `/api/evaluaciones/:id/reporte.pdf` | Reporte PDF |
+| GET | `/api/evaluaciones/historial-global` | Historial global |
+| GET | `/api/usuarios` | Lista de usuarios |
+| POST | `/api/usuarios` | Crear usuario |
+| PUT | `/api/usuarios/:id` | Actualizar usuario |
+| PATCH | `/api/usuarios/:id/estado` | Activar/desactivar usuario |
+| PATCH | `/api/usuarios/:id/predios` | Asignar predios |
+| GET | `/api/usuarios/responsables` | Responsables disponibles |
+| GET | `/api/dashboard` | Métricas del panel |
+
+## EBA Assistant (chat flotante)
+
+Arquitectura: React `AsistenteChat.tsx` (burbuja flotante abajo-derecha, historial, Markdown con `react-markdown`/`remark-gfm`, sin HTML ejecutable) → `POST /api/asistente/conversaciones/:id/chat` (JWT) → `asistenteController` (rate-limit 20/min, lock por conversación) → `asistenteGemini.js` (SDK `@google/genai`, `gemini-3.5-flash-lite`, `store:false`, timeout 25s) → `asistenteTools.js` (6 tools de solo lectura) → MariaDB (`eba_db`). El cálculo oficial sigue en `construirDetalle()`; la IA solo interpreta.
+
+### Integración Gemini
+* SDK oficial `@google/genai`, API `generateContent` + Function Calling.
+* Modelo por `GEMINI_MODEL` (recomendado `gemini-3.5-flash-lite`, alternativas gratuitas `gemini-3.8-flash`, `gemini-3.1-flash-lite`). `gemini-2.5-flash` ya no está disponible para usuarios nuevos.
+* System prompt EBA (ponderaciones L1 20/L2 20/L3 35/L4 10/L5 15, calificaciones 0/20/55/100, 39 indicadores, no inventar, no modificar/cerrar evaluaciones).
+* `ASSISTANT_MAX_TOKENS=800`, `TIMEOUT 25s`, `MAX_TOOL_CALLS 5`.
+
+### Herramientas disponibles (solo lectura)
+1. `consultarPrediosAutorizados`
+2. `consultarEvaluacionesAutorizadas`
+3. `consultarResultadosOficiales` (vía `construirDetalle()`)
+4. `consultarIndicadores`
+5. `consultarLibertades`
+6. `analizarOportunidadesMejora`
+
+Nunca SQL libre, nunca escritura (crear/cerrar/borrar).
+
+### Endpoints del asistente
+| Método | Ruta | Uso |
+|---|---|---|
+| POST | `/api/asistente/conversaciones` | Crear (título opcional) |
+| GET | `/api/asistente/conversaciones` | Lista propia |
+| GET | `/api/asistente/conversaciones/:id` | Detalle + mensajes |
+| GET | `/api/asistente/conversaciones/:id/mensajes` | Mensajes cronológicos |
+| DELETE | `/api/asistente/conversaciones/:id` | Borra en cascada sus mensajes |
+| POST | `/api/asistente/conversaciones/:id/chat` | Envía `mensaje` y recibe `texto/llamadas/modelo` |
+| GET | `/api/asistente/tools/predios` | Solo las 6 tools de prueba (F2) |
+
+### Permisos por rol (solo para el asistente)
+
+| Rol | Predios | Evaluaciones | Conversaciones |
+|---|---|---|---|
+| **ADMIN** | Todos | Todas | Solo propias (`usuario_id = JWT.id`) |
+| **EVALUADOR** | Creados por él, responsables o con evaluación asignada | Donde es `evaluador_id`, creó el predio o es responsable | Solo propias |
+| **RESPONSABLE** | Solo `responsable_id = id` | Solo evaluaciones de sus predios (JOIN) | Solo propias |
+
+Implementación centralizada en `backend/src/utils/permisos.js` (`esAdmin/esEvaluador/esResponsable`, `puedeConsultarPredio/Evaluacion`, `condicion*Autorizado` parametrizado). Conversaciones: incluso ADMIN no accede a ajenas.
+
+### Persistencia del historial
+* `asistente_conversaciones (id, usuario_id, titulo, creado_en, actualizado_en)` + `asistente_mensajes (id, conversacion_id, rol, contenido, creado_en)` en MariaDB.
+* Recupera últimas 20 del hilo para el contexto; Markdown se guarda tal cual y se renderiza con `ReactMarkdown` en el frontend.
+* Concurrencia: serialización por conversación en memoria (`conBloqueoConversacion` Map) — protege una sola instancia, no multi-instancia.
+
+### Variables de entorno (backend `.env`, nunca `VITE_`)
+```ini
+GEMINI_API_KEY=...
+GEMINI_MODEL=gemini-3.5-flash-lite
+ASSISTANT_MAX_TOKENS=800
+ASSISTANT_TIMEOUT_MS=25000
+ASSISTANT_MAX_TOOL_CALLS=5
+```
+Más `PORT, JWT_SECRET, JWT_EXPIRES_IN, DB_HOST, DB_PORT=3307, DB_USER, DB_PASSWORD, DB_NAME=eba_db` y `frontend/.env` solo `VITE_API_URL`.
+
+### Inicio y detención
+```powershell
+iniciar-eba.bat   # MariaDB + backend (:4000) + frontend (:5173) + abre navegador
+detener-eba.bat   # mata 4000/5173 (MariaDB queda como servicio)
 ```
 
-Genera:
+### Errores y límites
+* Rate-limit en memoria **20 req/min** por usuario → `429`.
+* Timeout Gemini 25s → `502`; cuota/429 de Google → `429`; clave/modelo inválido → `502` sin exponer detalles; respuesta vacía → `502`.
+* `POST /chat`: `400` mensaje vacío/largo o ID inválido, `404` conversación ajena/inexistente, `401` sin JWT, `403` rol no permitido en tools.
 
-- `backend/dist`: JavaScript compilado de la API.
-- `frontend/dist`: archivos estáticos del frontend.
+### Privacidad
+* No se envían contraseñas, tokens, correos ni claves a Gemini (solo IDs, nombre/municipio/especie/sistema y resultados oficiales).
+* Nivel gratuito AI Studio: Google **puede usar los datos para mejorar sus productos**; no envíes PII/confidencial.
+* Historial permanente en MariaDB por usuario; ADMIN no ve conversaciones ajenas.
 
-Para iniciar la API compilada:
+## Respaldo y restauración (MariaDB)
 
-```bash
-npm run start -w backend
+### Generar copia actualizada (solo con autorización)
+```powershell
+cmd /c ""C:\Program Files\MariaDB 13.0\bin\mysqldump.exe" -u eba_user -p --port=3307 --single-transaction --routines --triggers eba_db > database\eba_db_dump.sql"
+# Verifica el tamaño > 42 KB (dump original)
+```
+*No he generado ni sobrescrito respaldos en F6-A.*
+
+### Restaurar
+```powershell
+cmd /c ""C:\Program Files\MariaDB 13.0\bin\mysql.exe" -u root -p --port=3307 < database\eba_db_dump.sql"
+# o con eba_user:
+cmd /c ""C:\Program Files\MariaDB 13.0\bin\mysql.exe" -u eba_user -p --port=3307 < database\eba_db_dump.sql"
 ```
 
-El frontend compilado puede servirse con cualquier servidor estático. Si se publica en un dominio distinto al de la API, configure `VITE_API_URL` al compilar o publique ambos bajo el mismo origen y un proxy `/api`.
+### Aplicar migración del asistente (solo cuando corresponda)
+```powershell
+cmd /c ""C:\Program Files\MariaDB 13.0\bin\mysql.exe" -u eba_user -p --port=3307 eba_db < database\asistente_migration.sql"
+& "C:\Program Files\MariaDB 13.0\bin\mysql.exe" -u eba_user -peba_password --port=3307 eba_db -e "SHOW TABLES LIKE 'asistente_%';"
+```
+La migración solo crea `asistente_conversaciones` y `asistente_mensajes` con FKs en cascada; no altera tablas existentes.
 
----
+## Seguridad
 
-## 13. Seguridad y validación
+- **No subir** el archivo `.env`: contiene credenciales y el secreto JWT. Usa `.env.example` como plantilla.
+- Cambia `JWT_SECRET` y las contraseñas de demostración en producción.
+- El seed incluye contraseñas de prueba solo para desarrollo.
 
-- Contraseñas almacenadas con hash `bcrypt` (bcryptjs, costo 10); nunca en texto plano.
-- Autenticación con JWT y expiración.
-- Validación de entrada con Zod.
-- Consultas SQL parametrizadas; no se concatenan valores del usuario.
-- Middleware de roles en el backend.
-- Filtros de alcance por responsable aplicados en las consultas, no solo en la interfaz.
-- Errores centralizados con códigos HTTP adecuados (`400`, `401`, `403`, `404`, `409`, `500`).
-- CORS configurable por `CORS_ORIGIN`.
-- El reporte PDF se genera en el servidor y respeta las mismas reglas de acceso.
+## Notas
 
----
-
-## 14. Notas y supuestos
-
-- El promedio simple por libertad está aislado y documentado. Si el ICA define otra regla (por ejemplo, ponderar indicadores o usar el peor puntaje), solo debe modificarse `calcularPuntajeLibertad` en `backend/src/domain/scoring.ts`.
-- Los textos de criterios `100`, `55`, `20` y `0` se cargan vacíos en el seed porque la metodología no los trae completos. El administrador puede editarlos desde **Catálogo**.
-- El total de un borrador es una proyección para orientar al evaluador; el total oficial solo se congela al cerrar.
-- El seed de demostración ajusta sus calificaciones para producir `92.13` y la clasificación `EXCELENTE BIENESTAR`.
-- El evaluador puede asignar responsable al crear o editar un predio; la asignación masiva de predios a responsables sigue siendo exclusiva del administrador.
-- La base de datos no se incluye en el repositorio. Debe existir un servidor MySQL/MariaDB accesible.
-- El proyecto no incluye un servidor de correo ni recuperación de contraseña; la gestión de claves la realiza el administrador.
-- El frontend usa Recharts para las gráficas y `pdfkit` en el backend para el PDF.
-
----
-
-## 15. Solución de problemas
-
-### La API no inicia: “No fue posible conectar con la base de datos”
-
-1. Verifique que MySQL/MariaDB esté iniciado.
-2. Revise `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD` y `DB_NAME` en `backend/.env`.
-3. Confirme que la base exista y que el usuario tenga permisos.
-4. Ejecute `npm run db:setup`.
-
-### Error `ECONNREFUSED 127.0.0.1:3306`
-
-El servidor de base de datos no está escuchando en ese puerto. En XAMPP puede iniciarlo desde el panel de control; si usa otro puerto, actualice `DB_PORT`.
-
-### El frontend carga pero las solicitudes fallan
-
-Confirme que la API esté en `http://localhost:4000` y que Vite esté usando el proxy. Si cambió el puerto de la API, actualice `vite.config.ts` o configure `VITE_API_URL`.
-
-### “No se puede cerrar la evaluación: faltan N indicadores”
-
-La evaluación tiene indicadores aplicables sin calificar. Complete todos los indicadores del snapshot antes de cerrar.
-
-### El responsable no ve un predio o una evaluación
-
-El acceso está restringido a los predios donde figura como responsable y a evaluaciones cerradas. Verifique la asignación desde el usuario administrador.
-
-### Puerto 4000 o 5173 ocupado
-
-Cierre el proceso que usa el puerto o cambie `PORT` en `backend/.env` y el proxy de Vite.
+- El puerto de MariaDB usado en desarrollo es **3307**; se configura en `backend/.env`.
+- La carpeta `backend/uploads/` se conserva vacía y su contenido generado se ignora en Git.
+- `frontend/frontend/` corresponde a una copia duplicada del ZIP original y está excluida del repositorio.
